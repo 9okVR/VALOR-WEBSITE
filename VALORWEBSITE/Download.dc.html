@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+<style>
+html,body{margin:0;background:#07070A;color:#F5F5F8;font-family:'Schibsted Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#E8536B;text-decoration:none}
+a:hover{color:#F5F5F8}
+@keyframes dlRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:#07070A">
+
+  <div aria-hidden="true" style="position:absolute;inset:0;opacity:0.3;-webkit-mask-image:radial-gradient(ellipse 70% 70% at 50% 45%, #000 20%, transparent 80%);mask-image:radial-gradient(ellipse 70% 70% at 50% 45%, #000 20%, transparent 80%)">
+    <x-import component="CRTWarp" from="./CRTWarp.jsx" dc-props="{{ crt }}" hint-size="100%,100%" style="position:absolute;inset:0"></x-import>
+  </div>
+
+  <header style="position:relative;z-index:2;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+    <a href="VALOR v2.dc.html" style="display:flex;align-items:baseline;gap:2px;text-decoration:none">
+      <img src="assets/valor-v.png" alt="V" style="height:15px;width:auto;display:block;align-self:center;position:relative;top:-1.5px">
+      <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.9375rem;letter-spacing:0.16em;color:#F5F5F8">ALOR</span>
+    </a>
+    <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener" style="display:flex;align-items:center;min-height:44px;font-size:0.875rem;font-weight:500;color:#9A9AA8">Discord</a>
+  </header>
+
+  <main style="position:relative;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 20px 80px">
+    <img src="assets/valor-v.png" alt="" style="height:72px;width:auto;display:block;margin-bottom:28px;animation:dlRise 700ms cubic-bezier(0.22,1,0.36,1) 80ms both">
+    <h1 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(2.25rem,6vw,3.5rem);line-height:1.05;letter-spacing:-0.035em;color:#F5F5F8;animation:dlRise 700ms cubic-bezier(0.22,1,0.36,1) 180ms both">The VALOR app</h1>
+    <p style="margin:0 0 36px;max-width:44ch;font-size:1.0625rem;line-height:1.6;color:#A2A2B0;animation:dlRise 700ms cubic-bezier(0.22,1,0.36,1) 260ms both">Our own executor is an idea we may build later. It has no release date, and nothing is available to download.</p>
+
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;animation:dlRise 700ms cubic-bezier(0.22,1,0.36,1) 360ms both">
+      <span aria-disabled="true" style="display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:999px;background:#16161C;color:#C9C9D3;font-size:0.9375rem;font-weight:500;cursor:not-allowed"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;margin-top:-2px"><path d="M16.37 12.63c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.19-1.73-1.36-.14-2.65.8-3.34.8-.69 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.39 6.62 1.11 8.79.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.7.71 2.87.69 1.19-.02 1.94-1.08 2.66-2.14.84-1.23 1.19-2.42 1.21-2.48-.03-.01-2.32-.89-2.3-3.55ZM14.18 6.16c.6-.73 1.01-1.75.9-2.76-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.68-.92 2.67.97.08 1.96-.49 2.56-1.22Z"></path></svg>macOS<span style="font-size:0.75rem;color:#A2A2B0">Not released</span></span>
+      <span aria-disabled="true" style="display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 22px;border-radius:999px;background:#16161C;color:#9A9AA8;font-size:0.9375rem;font-weight:500;cursor:not-allowed"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M3 5.5 10.5 4.5v7H3v-6ZM11.5 4.36 21 3v8.5h-9.5V4.36ZM3 12.5h7.5v7L3 18.5v-6ZM11.5 12.5H21V21l-9.5-1.36V12.5Z"></path></svg>Windows<span style="font-size:0.75rem;color:#A2A2B0">Not released</span></span>
+    </div>
+    <p style="margin:18px 0 0;font-size:0.8125rem;color:#9A9AA8;animation:dlRise 700ms cubic-bezier(0.22,1,0.36,1) 420ms both">Apple Silicon and Intel</p>
+
+    <p style="margin:36px 0 0;max-width:52ch;font-size:0.875rem;line-height:1.6;color:#9A9AA8;animation:dlRise 700ms cubic-bezier(0.22,1,0.36,1) 460ms both">VALOR HUB works today on the executor you already use. Join the <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener">Discord</a> to hear if the app is ever released.</p>
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      crt: {
+        color: '#6E0818', backgroundColor: '#07070A', speed: 0.3, curvature: 0.18,
+        scanlineStrength: 0.42, scanlineFrequency: 220, waveAmplitude: 0.22, waveFrequency: 2.3,
+        bloom: 0.5, bloomRadius: 1, noise: 0.06, vignette: 0.9, brightness: 0.55,
+        pixelation: 1, rgbShift: 0.01, mouseReact: true, mouseStrength: 0.3, dpr: 1, fps: 30
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

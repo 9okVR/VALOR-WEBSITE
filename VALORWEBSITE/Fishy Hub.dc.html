@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+<style>
+:root{
+  --bg-base:#08080B; --bg-surface-1:#0E0E13; --bg-surface-2:#15151C; --bg-surface-3:#1C1C25;
+  --border-hairline:#22222D; --border-strong:#2E2E3B;
+  --text-primary:#F5F5F8; --text-secondary:#A2A2B0; --text-tertiary:#9A9AA8; --text-disabled:#45454F;
+  --accent:#980924; --accent-hover:#B30E2C; --accent-active:#7A0620; --accent-dim:#4A0716;
+  --accent-wash:rgba(152,9,36,0.12); --accent-glow:rgba(152,9,36,0.38);
+  --status-working:#3FCF8E; --status-partial:#E8B93C; --status-patched:#E5606B;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--bg-base);color:var(--text-secondary);font-family:'Schibsted Grotesk',system-ui,sans-serif;font-size:0.9375rem;line-height:1.6;-webkit-font-smoothing:antialiased;text-wrap:pretty}
+*{box-sizing:border-box}
+a{color:var(--text-secondary);text-decoration:none;transition:color 180ms var(--ease)}
+a:hover{color:var(--text-primary);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+input,select,button{font:inherit;color:inherit}
+select{appearance:none}
+table{border-collapse:collapse}
+[data-reveal]{opacity:0;transform:translateY(14px);transition:opacity 520ms cubic-bezier(0.22,1,0.36,1),transform 520ms cubic-bezier(0.22,1,0.36,1)}
+[data-reveal][data-in]{opacity:1;transform:none}
+@keyframes loaderRing{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes logoIntro{from{opacity:0;transform:scale(1.035)}to{opacity:1;transform:scale(1)}}
+@keyframes logoFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-6px,0)}}
+@keyframes valorRing{to{transform:rotate(360deg)}}
+@keyframes markRise{from{clip-path:inset(0 0 100% 0);transform:translateY(8px)}to{clip-path:inset(0 0 0 0);transform:none}}
+@keyframes wordWipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+@keyframes loaderSheen{from{background-position:0% 50%}to{background-position:200% 50%}}
+[data-hold]{opacity:0;transform:translateY(12px);transition:opacity 1000ms cubic-bezier(0.22,1,0.36,1),transform 1000ms cubic-bezier(0.22,1,0.36,1)}
+[data-hold][data-in]{opacity:1;transform:none}
+[data-scroll]::-webkit-scrollbar{height:6px}
+[data-scroll]::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+[data-scroll]::-webkit-scrollbar-track{background:var(--bg-surface-1)}
+@media (max-width:900px){
+  [data-stack]{grid-template-columns:1fr !important}
+  [data-hide-sm]{display:none !important}
+  [data-show-sm]{display:flex !important}
+  [data-pad]{padding-left:20px !important;padding-right:20px !important}
+  [data-app-media]{order:2}
+  [data-app-copy]{order:1}
+}
+@media (max-width:620px){
+  [data-hero]{padding:116px 18px 72px !important;min-height:100svh}
+  [data-hero-mark]{height:92px !important}
+  [data-hero-cta]{width:100%}
+  [data-hero-cta] > a{flex:1 1 100%;justify-content:center}
+  [data-app-tilt]{transform:none !important}
+  [data-drift]{height:400px !important}
+  [data-price-row]{gap:14px !important}
+  [data-price-card]{flex:1 1 100% !important;min-height:0 !important}
+  [data-price-card] > *{min-height:0 !important}
+  h2{font-size:2rem !important;letter-spacing:-0.025em !important}
+  [data-snippet]{font-size:0.75rem !important}
+}
+@media (hover:none){
+  [data-app-tilt]{transform:rotateY(12deg) rotateX(5deg) rotateZ(-1.5deg) !important}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+  [data-reveal],[data-hold]{opacity:1 !important;transform:none !important}
+  [data-logo-liquid],[data-logo-float],[data-logo-stack]{animation:none !important;opacity:1 !important;transform:none !important}
+  [data-logo-shine]{display:none !important}
+
+}
+</style>
+</helmet>
+
+<div style="background:var(--bg-base);background-image:url(&quot;data:image/svg+xml;utf8,&quot;);background-repeat:repeat;min-height:100vh;overflow-x:hidden;-webkit-text-size-adjust:100%">
+
+<header data-hold style="position:fixed;top:0;left:0;right:0;z-index:60;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid rgba(255,255,255,0.05);background:rgba(8,8,11,0.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);pointer-events:auto">
+
+  <a href="#top" style="display:flex;align-items:baseline;gap:2px;text-decoration:none" style-hover="text-decoration:none">
+    <img src="assets/valor-v.png" alt="V" style="height:15px;width:auto;display:block;flex-shrink:0;align-self:center;position:relative;top:-1.5px">
+    <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:0.9375rem;letter-spacing:0.16em;color:var(--text-primary)">ALOR</span>
+  </a>
+
+  <nav style="display:flex;align-items:center;gap:26px">
+    <a data-hide-sm href="#library" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Script hub</a>
+    <a data-hide-sm href="#pricing" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Pricing</a>
+    <a data-hide-sm href="#faq" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">FAQ</a>
+    <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener" style="display:flex;align-items:center;min-height:44px;font-size:0.875rem;font-weight:500;color:var(--text-primary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:#E8536B;text-decoration:none">Discord</a>
+
+    <button data-show-sm type="button" onClick="{{ onToggleMenu }}" aria-label="Menu" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;background:transparent;border:0;color:var(--text-primary);cursor:pointer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+    </button>
+  </nav>
+
+  <div style="position:absolute;top:64px;right:0;left:0;flex-direction:column;gap:2px;padding:12px 24px 18px;background:rgba(8,8,11,0.96);border-bottom:1px solid rgba(255,255,255,0.05);display:{{ menuDisplay }}">
+    <a href="#library" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Script hub</a>
+    <a href="#pricing" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Pricing</a>
+    <a href="#faq" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">FAQ</a>
+  </div>
+</header>
+
+<section id="top" data-hero style="position:relative;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:172px 20px 104px;overflow:hidden">
+  <div data-atmo="crt" aria-hidden="true" style="position:absolute;inset:0;z-index:0;opacity:0.34;-webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 62%, transparent 96%);mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 62%, transparent 96%)">
+    <x-import component="CRTWarp" from="./CRTWarp.jsx" dc-props="{{ crt }}" hint-size="100%,100%" style="position:absolute;inset:0"></x-import>
+  </div>
+
+  <div data-atmo="pool" aria-hidden="true" style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:min(1100px,120vw);height:min(760px,90vh);z-index:0;pointer-events:none;background:radial-gradient(ellipse 46% 44% at 50% 50%, rgba(152,9,36,0.16) 0%, rgba(152,9,36,0.09) 38%, rgba(152,9,36,0.03) 64%, transparent 82%);filter:blur(28px)"></div>
+  <div data-atmo="pool" aria-hidden="true" style="position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);width:min(420px,60vw);height:min(300px,40vh);z-index:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(200,16,46,0.12) 0%, rgba(152,9,36,0.05) 52%, transparent 78%);filter:blur(36px)"></div>
+
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:18px">
+    <div style="animation:markRise 620ms cubic-bezier(0.22,1,0.36,1) 120ms both">
+      <img data-hero-mark src="assets/valor-v.png" alt="VALOR" style="height:132px;width:auto;display:block;flex-shrink:0">
+    </div>
+    <h1 style="margin:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(2.75rem,8vw,5rem);line-height:1;letter-spacing:0.22em;text-indent:0.22em;color:var(--text-primary);text-shadow:0 0 18px rgba(200,16,46,0.40), 0 0 54px rgba(152,9,36,0.30)">
+      <x-import component="DecryptedText" from="./DecryptedText.jsx" dc-props="{{ word }}" hint-size="auto,auto"></x-import>
+    </h1>
+  </div>
+
+  <p data-hold style="max-width:54ch;margin:22px 0 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);transition-delay:220ms">Join the waitlist for macOS</p>
+
+  <div data-hold data-hero-cta style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-top:32px;transition-delay:420ms">
+    <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener" data-specular data-radius="12" data-shine="120" data-fade="62" data-thickness="1" data-proximity="260" style="position:relative;display:flex;align-items:center;gap:8px;height:48px;padding:0 24px;background:#8E0A20;border:1px solid rgba(200,16,46,0.45);color:#FFF1F3;font-size:0.9375rem;font-weight:500;border-radius:12px;text-decoration:none;transition:background-color 180ms var(--ease),border-color 180ms var(--ease),box-shadow 180ms var(--ease)" style-hover="background:#A30E27;border-color:rgba(200,16,46,0.8);box-shadow:0 0 28px rgba(200,16,46,0.30);text-decoration:none" style-active="background:var(--accent-active);transform:translateY(1px)">
+      Join the waitlist on Discord
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+    </a>
+    <a href="#library" style="display:flex;align-items:center;height:48px;padding:0 10px;font-size:0.9375rem;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Browse the hub</a>
+  </div>
+
+
+
+
+
+
+  
+
+  </div>
+
+</section>
+
+<main data-pad style="max-width:1200px;margin:0 auto;padding:0 32px">
+
+  <section id="app" data-reveal style="padding:96px 0">
+    <div data-stack style="display:grid;grid-template-columns:7fr 5fr;gap:64px;align-items:center">
+
+      <div data-app-media style="min-width:0;perspective:1600px">
+        <div data-app-tilt style="position:relative;transform:rotateY(19deg) rotateX(7deg) rotateZ(-2deg);transform-style:preserve-3d;transition:transform 600ms cubic-bezier(0.22,1,0.36,1)" style-hover="transform:rotateY(11deg) rotateX(4deg) rotateZ(-1deg)">
+          <div aria-hidden="true" style="position:absolute;inset:-6% -5% -10%;border-radius:22px;overflow:hidden;z-index:0;pointer-events:none;filter:blur(26px);opacity:0.75">
+            <div style="position:absolute;top:50%;left:50%;width:170%;aspect-ratio:1;transform-origin:center;margin:-85% 0 0 -85%;background:conic-gradient(from 0deg,transparent 0deg,rgba(200,16,46,0.55) 40deg,rgba(255,132,151,0.85) 80deg,rgba(200,16,46,0.55) 120deg,transparent 170deg,transparent 190deg,rgba(152,9,36,0.45) 240deg,rgba(200,16,46,0.7) 290deg,rgba(152,9,36,0.4) 330deg,transparent 360deg);animation:valorRing 7s linear infinite"></div>
+          </div>
+
+          <div style="position:relative;z-index:1;padding:1.5px;border-radius:15px;overflow:hidden;background:rgba(255,255,255,0.05)">
+            <div aria-hidden="true" style="position:absolute;top:50%;left:50%;width:160%;aspect-ratio:1;transform-origin:center;margin:-80% 0 0 -80%;background:conic-gradient(from 0deg,transparent 0deg,#C8102E 40deg,#FF8497 75deg,#FFE6EA 95deg,#FF8497 115deg,#C8102E 150deg,transparent 185deg,transparent 205deg,#8E0A20 255deg,#C8102E 300deg,#8E0A20 335deg,transparent 360deg);animation:valorRing 7s linear infinite"></div>
+            <img src="assets/valor-app.png" alt="The VALOR editor, with a Luau script open and the console below" style="position:relative;z-index:1;display:block;width:100%;height:auto;border-radius:13.5px;box-shadow:0 48px 90px -20px rgba(0,0,0,0.85)">
+          </div>
+        </div>
+      </div>
+
+      <div data-app-copy style="min-width:0">
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 18px">The app</p>
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0 0 18px">A genuine working product</h2>
+        <p style="max-width:40ch;margin:0 0 26px;font-size:1.0625rem;line-height:1.6;color:var(--text-secondary)">A simple, unique executor that genuinely works. Tabbed scripts, a saved workspace and a console that separates game output from VALOR's own. Write a script, hit Execute, and run it again as many times as you want without rejoining.</p>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;font-size:0.9375rem;line-height:1.5;color:var(--text-secondary)">
+          <li style="display:flex;gap:11px;align-items:flex-start"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:8px"></span><span>Tabbed script workspace that persists between sessions</span></li>
+          <li style="display:flex;gap:11px;align-items:flex-start"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:8px"></span><span>Auto-run on join, so your scripts are there before you are</span></li>
+          <li style="display:flex;gap:11px;align-items:flex-start"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:8px"></span><span>Console filters for game output, VALOR and errors</span></li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="library" data-reveal style="padding:96px 0">
+    <div data-stack style="display:grid;grid-template-columns:5fr 7fr;gap:56px;align-items:center">
+      <div style="min-width:0">
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0 0 16px">Not just an executor</h2>
+        <p style="max-width:44ch;margin:0 0 30px;font-size:1.0625rem;line-height:1.6">The VALOR development team does not only build the executor. We write scripts and give them away free, and they ship inside the app in our own first-party hub, ready to run the moment you open it. More info on the Discord server.</p>
+
+        <div style="position:relative;max-width:480px;margin-bottom:20px;border-radius:13px;padding:1.5px;overflow:hidden">
+          <div style="position:absolute;top:50%;left:50%;width:220%;aspect-ratio:1;background:conic-gradient(from 0deg,#4A0716,#980924,#FFD9DF,#980924,#4A0716);animation:loaderRing 9s linear infinite;transform:translate(-50%,-50%)"></div>
+        <div style="position:relative;display:flex;align-items:center;gap:12px;height:64px;padding:0 10px 0 20px;background:var(--bg-surface-1);border-radius:12px">
+          <code style="flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-family:'IBM Plex Mono',monospace;font-size:0.9375rem;background:linear-gradient(90deg,#B30E2C 0%,#E0224A 26%,#FFE3E8 50%,#E0224A 74%,#B30E2C 100%);background-size:200% 100%;background-repeat:repeat;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:loaderSheen 11s linear infinite">loadstring(game:HttpGet("https://api.jnkie.com/api/v1/loaders/public/f303b97c2bb24ac31f25d957eb3e28e66c09789bf720909e0f6a5d4b29503501/download"))()</code>
+          <button type="button" onClick="{{ onCopyLoader }}" aria-label="Copy loader" style="display:flex;align-items:center;justify-content:center;width:44px;height:44px;flex-shrink:0;background:transparent;border:1px solid transparent;border-radius:10px;color:var(--text-tertiary);cursor:pointer;transition:background-color 180ms var(--ease),border-color 180ms var(--ease),color 180ms var(--ease)" style-hover="background:var(--bg-surface-3);border-color:var(--border-hairline);color:var(--text-primary)">
+            <sc-if value="{{ loaderCopied }}" hint-placeholder-val="{{ false }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m20 6-11 11-5-5"></path></svg>
+            </sc-if>
+            <sc-if value="{{ loaderNotCopied }}" hint-placeholder-val="{{ true }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </sc-if>
+          </button>
+        </div>
+        </div>
+
+        <p style="margin:0;font-size:0.875rem;line-height:1.6;color:var(--text-tertiary)">New per-game loaders go up in the Discord as they land.</p>
+      </div>
+
+      <div data-drift style="position:relative;min-width:0;height:560px;overflow:hidden">
+        <div data-drift-mask-h style="position:absolute;inset:0;overflow:hidden;-webkit-mask-image:linear-gradient(to right, transparent 0%, #000 22%, #000 68%, transparent 100%);mask-image:linear-gradient(to right, transparent 0%, #000 22%, #000 68%, transparent 100%)">
+        <div data-drift-mask-v style="position:absolute;inset:0;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 78%, transparent 100%);mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 78%, transparent 100%)">
+        <div data-drift-persp style="position:absolute;inset:0;overflow:hidden;perspective:850px;perspective-origin:50% 50%">
+        <div data-drift-plane style="position:absolute;top:50%;left:56%;display:flex;transform-style:flat;transform-origin:50% 50%;backface-visibility:hidden;transform:translate(-50%,-50%) scale(1.06) rotateX(26deg) rotateY(-14deg) translateZ(-120px)">
+
+          <div style="width:164px">
+            <div data-drift-track style="display:flex;flex-direction:column;backface-visibility:hidden">
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[FPS] One Tap</span><div style="position:absolute;inset:0;background:url(assets/thumb-fps-one-tap.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Clean all the Leaves</span><div style="position:absolute;inset:0;background:url(assets/thumb-clean-all-the-leaves.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Brookhaven RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-brookhaven-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Flee the Facility</span><div style="position:absolute;inset:0;background:url(assets/thumb-flee-the-facility.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">San Diego Border RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-san-diego-border-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Evade</span><div style="position:absolute;inset:0;background:url(assets/thumb-evade.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">99 Nights in the Forest</span><div style="position:absolute;inset:0;background:url(assets/thumb-99-nights-in-the-forest.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dress to Impress</span><div style="position:absolute;inset:0;background:url(assets/thumb-dress-to-impress.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Fling Things and People</span><div style="position:absolute;inset:0;background:url(assets/thumb-fling-things-and-people.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Tower of Hell</span><div style="position:absolute;inset:0;background:url(assets/thumb-tower-of-hell.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[FPS] One Tap</span><div style="position:absolute;inset:0;background:url(assets/thumb-fps-one-tap.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Clean all the Leaves</span><div style="position:absolute;inset:0;background:url(assets/thumb-clean-all-the-leaves.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Brookhaven RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-brookhaven-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Flee the Facility</span><div style="position:absolute;inset:0;background:url(assets/thumb-flee-the-facility.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">San Diego Border RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-san-diego-border-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Evade</span><div style="position:absolute;inset:0;background:url(assets/thumb-evade.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">99 Nights in the Forest</span><div style="position:absolute;inset:0;background:url(assets/thumb-99-nights-in-the-forest.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dress to Impress</span><div style="position:absolute;inset:0;background:url(assets/thumb-dress-to-impress.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Fling Things and People</span><div style="position:absolute;inset:0;background:url(assets/thumb-fling-things-and-people.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Tower of Hell</span><div style="position:absolute;inset:0;background:url(assets/thumb-tower-of-hell.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[FPS] One Tap</span><div style="position:absolute;inset:0;background:url(assets/thumb-fps-one-tap.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Clean all the Leaves</span><div style="position:absolute;inset:0;background:url(assets/thumb-clean-all-the-leaves.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Brookhaven RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-brookhaven-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Flee the Facility</span><div style="position:absolute;inset:0;background:url(assets/thumb-flee-the-facility.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">San Diego Border RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-san-diego-border-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Evade</span><div style="position:absolute;inset:0;background:url(assets/thumb-evade.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">99 Nights in the Forest</span><div style="position:absolute;inset:0;background:url(assets/thumb-99-nights-in-the-forest.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dress to Impress</span><div style="position:absolute;inset:0;background:url(assets/thumb-dress-to-impress.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Fling Things and People</span><div style="position:absolute;inset:0;background:url(assets/thumb-fling-things-and-people.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Tower of Hell</span><div style="position:absolute;inset:0;background:url(assets/thumb-tower-of-hell.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+            </div>
+          </div>
+
+          <div style="width:164px">
+            <div data-drift-track style="display:flex;flex-direction:column;backface-visibility:hidden">
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Jujutsu Shenanigans</span><div style="position:absolute;inset:0;background:url(assets/thumb-jujutsu-shenanigans.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dandy's World</span><div style="position:absolute;inset:0;background:url(assets/thumb-dandys-world.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Knife vs Gun Duels</span><div style="position:absolute;inset:0;background:url(assets/thumb-knife-vs-gun-duels.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Brookhaven RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-brookhaven-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Flee the Facility</span><div style="position:absolute;inset:0;background:url(assets/thumb-flee-the-facility.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">+1 Speed Monkey Escape</span><div style="position:absolute;inset:0;background:url(assets/thumb-speed-monkey-escape.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Fling Things and People</span><div style="position:absolute;inset:0;background:url(assets/thumb-fling-things-and-people.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">San Diego Border RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-san-diego-border-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Clean all the Leaves</span><div style="position:absolute;inset:0;background:url(assets/thumb-clean-all-the-leaves.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Bedwars</span><div style="position:absolute;inset:0;background:url(assets/thumb-bedwars.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Jujutsu Shenanigans</span><div style="position:absolute;inset:0;background:url(assets/thumb-jujutsu-shenanigans.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dandy's World</span><div style="position:absolute;inset:0;background:url(assets/thumb-dandys-world.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Knife vs Gun Duels</span><div style="position:absolute;inset:0;background:url(assets/thumb-knife-vs-gun-duels.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Brookhaven RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-brookhaven-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Flee the Facility</span><div style="position:absolute;inset:0;background:url(assets/thumb-flee-the-facility.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">+1 Speed Monkey Escape</span><div style="position:absolute;inset:0;background:url(assets/thumb-speed-monkey-escape.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Fling Things and People</span><div style="position:absolute;inset:0;background:url(assets/thumb-fling-things-and-people.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">San Diego Border RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-san-diego-border-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Clean all the Leaves</span><div style="position:absolute;inset:0;background:url(assets/thumb-clean-all-the-leaves.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Bedwars</span><div style="position:absolute;inset:0;background:url(assets/thumb-bedwars.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Jujutsu Shenanigans</span><div style="position:absolute;inset:0;background:url(assets/thumb-jujutsu-shenanigans.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dandy's World</span><div style="position:absolute;inset:0;background:url(assets/thumb-dandys-world.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Knife vs Gun Duels</span><div style="position:absolute;inset:0;background:url(assets/thumb-knife-vs-gun-duels.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Brookhaven RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-brookhaven-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Flee the Facility</span><div style="position:absolute;inset:0;background:url(assets/thumb-flee-the-facility.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">+1 Speed Monkey Escape</span><div style="position:absolute;inset:0;background:url(assets/thumb-speed-monkey-escape.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Fling Things and People</span><div style="position:absolute;inset:0;background:url(assets/thumb-fling-things-and-people.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">San Diego Border RP</span><div style="position:absolute;inset:0;background:url(assets/thumb-san-diego-border-rp.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Clean all the Leaves</span><div style="position:absolute;inset:0;background:url(assets/thumb-clean-all-the-leaves.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Bedwars</span><div style="position:absolute;inset:0;background:url(assets/thumb-bedwars.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+            </div>
+          </div>
+
+          <div style="width:164px">
+            <div data-drift-track style="display:flex;flex-direction:column;backface-visibility:hidden">
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">The Strongest Battlegrounds</span><div style="position:absolute;inset:0;background:url(assets/thumb-the-strongest-battlegrounds.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dress to Impress</span><div style="position:absolute;inset:0;background:url(assets/thumb-dress-to-impress.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Steal an Egg</span><div style="position:absolute;inset:0;background:url(assets/thumb-steal-an-egg.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[FPS] One Tap</span><div style="position:absolute;inset:0;background:url(assets/thumb-fps-one-tap.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dandy's World</span><div style="position:absolute;inset:0;background:url(assets/thumb-dandys-world.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Mine a Mountain</span><div style="position:absolute;inset:0;background:url(assets/thumb-mine-a-mountain.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Driving Empire</span><div style="position:absolute;inset:0;background:url(assets/thumb-driving-empire.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Evade</span><div style="position:absolute;inset:0;background:url(assets/thumb-evade.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">99 Nights in the Forest</span><div style="position:absolute;inset:0;background:url(assets/thumb-99-nights-in-the-forest.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Knife vs Gun Duels</span><div style="position:absolute;inset:0;background:url(assets/thumb-knife-vs-gun-duels.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">The Strongest Battlegrounds</span><div style="position:absolute;inset:0;background:url(assets/thumb-the-strongest-battlegrounds.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dress to Impress</span><div style="position:absolute;inset:0;background:url(assets/thumb-dress-to-impress.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Steal an Egg</span><div style="position:absolute;inset:0;background:url(assets/thumb-steal-an-egg.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[FPS] One Tap</span><div style="position:absolute;inset:0;background:url(assets/thumb-fps-one-tap.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dandy's World</span><div style="position:absolute;inset:0;background:url(assets/thumb-dandys-world.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Mine a Mountain</span><div style="position:absolute;inset:0;background:url(assets/thumb-mine-a-mountain.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Driving Empire</span><div style="position:absolute;inset:0;background:url(assets/thumb-driving-empire.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Evade</span><div style="position:absolute;inset:0;background:url(assets/thumb-evade.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">99 Nights in the Forest</span><div style="position:absolute;inset:0;background:url(assets/thumb-99-nights-in-the-forest.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Knife vs Gun Duels</span><div style="position:absolute;inset:0;background:url(assets/thumb-knife-vs-gun-duels.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">The Strongest Battlegrounds</span><div style="position:absolute;inset:0;background:url(assets/thumb-the-strongest-battlegrounds.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dress to Impress</span><div style="position:absolute;inset:0;background:url(assets/thumb-dress-to-impress.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Steal an Egg</span><div style="position:absolute;inset:0;background:url(assets/thumb-steal-an-egg.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[FPS] One Tap</span><div style="position:absolute;inset:0;background:url(assets/thumb-fps-one-tap.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Dandy's World</span><div style="position:absolute;inset:0;background:url(assets/thumb-dandys-world.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Mine a Mountain</span><div style="position:absolute;inset:0;background:url(assets/thumb-mine-a-mountain.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Driving Empire</span><div style="position:absolute;inset:0;background:url(assets/thumb-driving-empire.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Evade</span><div style="position:absolute;inset:0;background:url(assets/thumb-evade.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">99 Nights in the Forest</span><div style="position:absolute;inset:0;background:url(assets/thumb-99-nights-in-the-forest.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Knife vs Gun Duels</span><div style="position:absolute;inset:0;background:url(assets/thumb-knife-vs-gun-duels.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+            </div>
+          </div>
+
+          <div style="width:164px">
+            <div data-drift-track style="display:flex;flex-direction:column;backface-visibility:hidden">
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Violence District</span><div style="position:absolute;inset:0;background:url(assets/thumb-violence-district.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Driving Empire</span><div style="position:absolute;inset:0;background:url(assets/thumb-driving-empire.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">+1 Speed Monkey Escape</span><div style="position:absolute;inset:0;background:url(assets/thumb-speed-monkey-escape.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Jujutsu Shenanigans</span><div style="position:absolute;inset:0;background:url(assets/thumb-jujutsu-shenanigans.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">The Strongest Battlegrounds</span><div style="position:absolute;inset:0;background:url(assets/thumb-the-strongest-battlegrounds.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[Duels] Murderer vs Sheriffs</span><div style="position:absolute;inset:0;background:url(assets/thumb-duels-murderer-vs-sheriffs.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Bedwars</span><div style="position:absolute;inset:0;background:url(assets/thumb-bedwars.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Steal an Egg</span><div style="position:absolute;inset:0;background:url(assets/thumb-steal-an-egg.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Tower of Hell</span><div style="position:absolute;inset:0;background:url(assets/thumb-tower-of-hell.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Mine a Mountain</span><div style="position:absolute;inset:0;background:url(assets/thumb-mine-a-mountain.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Violence District</span><div style="position:absolute;inset:0;background:url(assets/thumb-violence-district.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Driving Empire</span><div style="position:absolute;inset:0;background:url(assets/thumb-driving-empire.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">+1 Speed Monkey Escape</span><div style="position:absolute;inset:0;background:url(assets/thumb-speed-monkey-escape.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Jujutsu Shenanigans</span><div style="position:absolute;inset:0;background:url(assets/thumb-jujutsu-shenanigans.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">The Strongest Battlegrounds</span><div style="position:absolute;inset:0;background:url(assets/thumb-the-strongest-battlegrounds.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[Duels] Murderer vs Sheriffs</span><div style="position:absolute;inset:0;background:url(assets/thumb-duels-murderer-vs-sheriffs.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Bedwars</span><div style="position:absolute;inset:0;background:url(assets/thumb-bedwars.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Steal an Egg</span><div style="position:absolute;inset:0;background:url(assets/thumb-steal-an-egg.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Tower of Hell</span><div style="position:absolute;inset:0;background:url(assets/thumb-tower-of-hell.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Mine a Mountain</span><div style="position:absolute;inset:0;background:url(assets/thumb-mine-a-mountain.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Violence District</span><div style="position:absolute;inset:0;background:url(assets/thumb-violence-district.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Driving Empire</span><div style="position:absolute;inset:0;background:url(assets/thumb-driving-empire.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">+1 Speed Monkey Escape</span><div style="position:absolute;inset:0;background:url(assets/thumb-speed-monkey-escape.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Jujutsu Shenanigans</span><div style="position:absolute;inset:0;background:url(assets/thumb-jujutsu-shenanigans.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">The Strongest Battlegrounds</span><div style="position:absolute;inset:0;background:url(assets/thumb-the-strongest-battlegrounds.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">[Duels] Murderer vs Sheriffs</span><div style="position:absolute;inset:0;background:url(assets/thumb-duels-murderer-vs-sheriffs.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Bedwars</span><div style="position:absolute;inset:0;background:url(assets/thumb-bedwars.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Steal an Egg</span><div style="position:absolute;inset:0;background:url(assets/thumb-steal-an-egg.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Tower of Hell</span><div style="position:absolute;inset:0;background:url(assets/thumb-tower-of-hell.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+              <div style="position:relative;height:124px;flex:0 0 auto"><div style="position:absolute;inset:4px;border-radius:14px;overflow:hidden;background:var(--bg-surface-2);border:1px solid var(--border-hairline);display:flex;align-items:flex-end;padding:10px;opacity:0.9;transition:opacity 420ms var(--ease),transform 420ms var(--ease)" style-hover="opacity:1;transform:translateZ(12px)"><span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-secondary);position:relative;z-index:1">Mine a Mountain</span><div style="position:absolute;inset:0;background:url(assets/thumb-mine-a-mountain.jpg) center/cover"></div><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.05) 55%)"></div></div></div>
+            </div>
+          </div>
+
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing" data-reveal style="padding:96px 0">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:36px">
+      <div>
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.3125rem;line-height:1.08;letter-spacing:-0.03em;color:var(--text-primary);margin:0">Pricing</h2>
+        <p style="max-width:54ch;margin:14px 0 0">VALOR is free on macOS, Apple Silicon and Intel. Premium covers the Windows build and everything we ship early.</p>
+      </div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-tertiary)">crypto · paypal · cash app · gift cards</span>
+    </div>
+
+    <div data-price-row style="display:flex;flex-wrap:wrap;justify-content:center;gap:20px;max-width:800px;margin:0 auto 28px">
+      <div data-price-card style="flex:0 1 370px;max-width:100%;min-height:470px;display:flex">
+      <x-import component="TiltCard" from="./PricingFx.jsx" max-tilt="{{ tilt }}" hint-size="100%,470px" style="position:relative;width:100%">
+      <div style="display:flex;flex-direction:column;flex:1;min-height:470px;background:var(--bg-surface-1);border:1px solid var(--border-hairline);border-radius:14px;padding:30px 28px;transition:background-color 180ms var(--ease),border-color 180ms var(--ease)" style-hover="background:var(--bg-surface-2);border-color:var(--border-strong)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:24px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-tertiary)">free</span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:18px">
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.75rem;line-height:1;letter-spacing:-0.03em;color:var(--text-primary)">$0</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-tertiary)">forever</span>
+        </div>
+        <p style="margin:14px 0 0;font-size:0.875rem;line-height:1.6;color:var(--text-secondary)">The base plan. No keys, no 24 hour limit, full library access. The macOS executor on Apple Silicon and Intel is completely free.</p>
+        <div style="height:1px;background:var(--border-hairline);margin:26px 0 22px"></div>
+        <ul style="list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column;gap:12px;font-size:0.875rem;line-height:1.5;color:var(--text-secondary)">
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--text-tertiary)"><path d="m20 6-11 11-5-5"></path></svg><span>Full access, no time limits</span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--text-tertiary)"><path d="m20 6-11 11-5-5"></path></svg><span>Full free library access</span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--text-tertiary)"><path d="m20 6-11 11-5-5"></path></svg><span>Community support</span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--text-tertiary)"><path d="m20 6-11 11-5-5"></path></svg><span>macOS executor, Apple Silicon and Intel</span></li>
+        </ul>
+        <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener" style="margin-top:auto;display:flex;align-items:center;justify-content:center;height:46px;padding:0 20px;background:transparent;border:1px solid var(--border-strong);color:var(--text-primary);font-size:0.9375rem;font-weight:500;border-radius:10px;text-decoration:none;transition:background-color 180ms var(--ease),border-color 180ms var(--ease)" style-hover="background:var(--bg-surface-2);border-color:var(--text-disabled);text-decoration:none">Get VALOR free</a>
+      </div>
+      </x-import>
+      </div>
+      <div data-price-card style="flex:0 1 370px;max-width:100%;min-height:470px;display:flex">
+      <x-import component="GlowCard" from="./PricingFx.jsx" dc-props="{{ glow }}" hint-size="100%,470px" style="position:relative;width:100%">
+      <div style="display:flex;flex-direction:column;flex:1;min-height:470px;padding:30px 28px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:24px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase"><x-import component="GradientText" from="./GradientText.jsx" dc-props="{{ grad }}" hint-size="auto,auto">premium</x-import></span>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-top:18px">
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.75rem;line-height:1;letter-spacing:-0.03em;color:var(--text-primary)">$5</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-tertiary)">/ month</span>
+        </div>
+        <p style="margin:14px 0 0;font-size:0.875rem;line-height:1.6;color:var(--text-secondary)">Covers the Windows build and every paid script, the ones that are genuinely hard to make, plus everything we release early.</p>
+        <div style="height:1px;background:var(--border-hairline);margin:26px 0 22px"></div>
+        <ul style="list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column;gap:12px;font-size:0.875rem;line-height:1.5;color:var(--text-secondary)">
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--accent)"><path d="m20 6-11 11-5-5"></path></svg><span><x-import component="GradientText" from="./GradientText.jsx" dc-props="{{ grad }}" hint-size="auto,auto">Windows external and internal version</x-import></span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--accent)"><path d="m20 6-11 11-5-5"></path></svg><span>Every paid script included, the hard ones</span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--accent)"><path d="m20 6-11 11-5-5"></path></svg><span><x-import component="GradientText" from="./GradientText.jsx" dc-props="{{ grad }}" hint-size="auto,auto">Early access to future updates</x-import></span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--accent)"><path d="m20 6-11 11-5-5"></path></svg><span>Free scripts for Roblox Studio game development</span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--accent)"><path d="m20 6-11 11-5-5"></path></svg><span>Early access to build models</span></li>
+          <li style="display:flex;gap:10px;align-items:flex-start"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0;margin-top:4px;color:var(--accent)"><path d="m20 6-11 11-5-5"></path></svg><span>Priority support</span></li>
+        </ul>
+        <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener" data-specular data-radius="10" data-shine="110" data-fade="60" data-thickness="1" data-proximity="230" style="position:relative;margin-top:auto;display:flex;align-items:center;justify-content:center;height:46px;padding:0 20px;background:#8E0A20;border:1px solid rgba(200,16,46,0.45);color:#FFF1F3;font-size:0.9375rem;font-weight:500;border-radius:10px;text-decoration:none;transition:background-color 180ms var(--ease),border-color 180ms var(--ease),box-shadow 180ms var(--ease)" style-hover="background:#A30E27;border-color:rgba(200,16,46,0.8);box-shadow:0 0 28px rgba(200,16,46,0.30);text-decoration:none">Get premium</a>
+      </div>
+      </x-import>
+      </div>
+    </div>
+
+    <p style="margin:0;font-size:0.875rem;line-height:1.6;color:var(--text-tertiary)">Questions about premium? <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener">We answer them in the Discord.</a></p>
+  </section>
+
+  <section id="faq" data-reveal style="padding:96px 0">
+    <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.3125rem;line-height:1.08;letter-spacing:-0.03em;color:var(--text-primary);margin:0 0 32px">Frequently asked</h2>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <sc-for list="{{ faqs }}" as="faq" hint-placeholder-count="4">
+        <div style="background:var(--bg-surface-1);border:1px solid var(--border-hairline);border-radius:12px;overflow:hidden;transition:border-color 180ms var(--ease)" style-hover="border-color:var(--border-strong)">
+          <button type="button" onClick="{{ faq.onToggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;background:transparent;border:0;text-align:left;cursor:pointer;font-family:'Archivo',sans-serif;font-weight:500;font-size:1.0625rem;color:var(--text-primary);transition:background-color 180ms var(--ease)" style-hover="background:var(--bg-surface-2)">
+            {{ faq.q }}
+            <span style="flex-shrink:0;color:var(--text-tertiary);transition:transform 220ms var(--ease);transform:{{ faq.iconTransform }}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+          </button>
+          <div style="display:grid;transition:grid-template-rows 280ms var(--ease),opacity 280ms var(--ease);grid-template-rows:{{ faq.rows }};opacity:{{ faq.opacity }}">
+            <div style="overflow:hidden">
+              <p style="margin:0;padding:0 20px 20px;max-width:72ch">{{ faq.a }}</p>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+
+
+</main>
+
+<footer style="background:var(--bg-surface-1)">
+  <div data-pad style="max-width:1200px;margin:0 auto;padding:64px 32px 32px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-tertiary)">Script hub</div>
+        <a href="#library" style="font-size:0.875rem">First-party hub</a>
+        <a href="#library" style="font-size:0.875rem">Supported games</a>
+        <a href="https://discord.gg/GSAHydBefQ" style="font-size:0.875rem">Request a game</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-tertiary)">Help</div>
+        <a href="#faq" style="font-size:0.875rem">Frequently asked</a>
+        <a href="#faq" style="font-size:0.875rem">Troubleshooting</a>
+        <a href="https://discord.gg/GSAHydBefQ" style="font-size:0.875rem">Report a break</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-tertiary)">Community</div>
+        <a href="https://discord.gg/GSAHydBefQ" style="font-size:0.875rem">Discord</a>
+        <a href="https://discord.gg/GSAHydBefQ" style="font-size:0.875rem">Contributors</a>
+        <a href="https://discord.gg/GSAHydBefQ" style="font-size:0.875rem">Contact</a>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:48px;padding-top:24px;border-top:1px solid var(--border-hairline)">
+      <img src="assets/valor-v.png" alt="VALOR" style="height:18px;width:auto;display:block;flex-shrink:0">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-tertiary)">© 2026 VALOR</span>
+    </div>
+    <p style="margin:16px 0 0;max-width:80ch;font-size:0.75rem;line-height:1.5;color:var(--text-tertiary)">VALOR is an independent product and is not affiliated with, endorsed by, or connected to Roblox Corporation. Scripts listed here are supplied by third parties. Use of third-party software may violate the terms of service of the platform and can result in account action. You are responsible for what you run.</p>
+  </div>
+</footer>
+
+
+<div data-blur-bottom aria-hidden="true" style="position:fixed;left:0;right:0;bottom:0;height:5rem;z-index:40;pointer-events:none;isolation:isolate;opacity:0;transition:opacity 260ms var(--ease)">
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.09rem);-webkit-backdrop-filter:blur(0.09rem);-webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 20%, #000 40%, transparent 60%);mask-image:linear-gradient(to bottom, transparent 0%, #000 20%, #000 40%, transparent 60%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.2rem);-webkit-backdrop-filter:blur(0.2rem);-webkit-mask-image:linear-gradient(to bottom, transparent 20%, #000 40%, #000 60%, transparent 80%);mask-image:linear-gradient(to bottom, transparent 20%, #000 40%, #000 60%, transparent 80%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.42rem);-webkit-backdrop-filter:blur(0.42rem);-webkit-mask-image:linear-gradient(to bottom, transparent 40%, #000 60%, #000 80%, transparent 100%);mask-image:linear-gradient(to bottom, transparent 40%, #000 60%, #000 80%, transparent 100%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.8rem);-webkit-backdrop-filter:blur(0.8rem);-webkit-mask-image:linear-gradient(to bottom, transparent 60%, #000 80%, #000 100%);mask-image:linear-gradient(to bottom, transparent 60%, #000 80%, #000 100%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(1.2rem);-webkit-backdrop-filter:blur(1.2rem);-webkit-mask-image:linear-gradient(to bottom, transparent 80%, #000 100%);mask-image:linear-gradient(to bottom, transparent 80%, #000 100%)"></div>
+</div>
+
+<div aria-hidden="true" style="position:fixed;left:0;right:0;top:0;height:4.5rem;z-index:40;pointer-events:none;isolation:isolate">
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.09rem);-webkit-backdrop-filter:blur(0.09rem);-webkit-mask-image:linear-gradient(to top, transparent 0%, #000 20%, #000 40%, transparent 60%);mask-image:linear-gradient(to top, transparent 0%, #000 20%, #000 40%, transparent 60%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.2rem);-webkit-backdrop-filter:blur(0.2rem);-webkit-mask-image:linear-gradient(to top, transparent 20%, #000 40%, #000 60%, transparent 80%);mask-image:linear-gradient(to top, transparent 20%, #000 40%, #000 60%, transparent 80%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.42rem);-webkit-backdrop-filter:blur(0.42rem);-webkit-mask-image:linear-gradient(to top, transparent 40%, #000 60%, #000 80%, transparent 100%);mask-image:linear-gradient(to top, transparent 40%, #000 60%, #000 80%, transparent 100%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(0.8rem);-webkit-backdrop-filter:blur(0.8rem);-webkit-mask-image:linear-gradient(to top, transparent 60%, #000 80%, #000 100%);mask-image:linear-gradient(to top, transparent 60%, #000 80%, #000 100%)"></div>
+  <div style="position:absolute;inset:0;backdrop-filter:blur(1.2rem);-webkit-backdrop-filter:blur(1.2rem);-webkit-mask-image:linear-gradient(to top, transparent 80%, #000 100%);mask-image:linear-gradient(to top, transparent 80%, #000 100%)"></div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;atmosphere&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dormant&quot;,&quot;Signal&quot;,&quot;Storm&quot;],&quot;default&quot;:&quot;Signal&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;pulse&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Still&quot;,&quot;Occasional&quot;,&quot;Restless&quot;],&quot;default&quot;:&quot;Restless&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;entrance&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Immediate&quot;,&quot;Cascade&quot;,&quot;Procession&quot;],&quot;default&quot;:&quot;Procession&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Feel&quot;}}">
+const STATUS = {
+  WORKING: { label: 'working', color: 'var(--status-working)' },
+  PARTIAL: { label: 'partial', color: 'var(--status-partial)' },
+  PATCHED: { label: 'patched', color: 'var(--status-patched)' }
+};
+
+const ENTRIES = [
+  { id: 'blox-fruits', title: 'Blox Fruits', author: '@veyra', cat: 'Farming', status: 'WORKING', tags: ['Auto Farm', 'Raid Helper', 'ESP'], time: '4 min ago' },
+  { id: 'grow-a-garden', title: 'Grow a Garden', author: '@nullbyte', cat: 'Farming', status: 'WORKING', tags: ['Auto Plant', 'Seed Sniper'], time: '22 min ago' },
+  { id: 'blade-ball', title: 'Blade Ball', author: '@kx.dev', cat: 'Combat', status: 'PARTIAL', tags: ['Auto Parry', 'Spam Block'], time: '1 h ago' },
+  { id: 'pet-sim-99', title: 'Pet Simulator 99', author: '@orbital', cat: 'Farming', status: 'WORKING', tags: ['Auto Hatch', 'Coin Farm', 'Teleports'], time: '2 h ago' },
+  { id: 'da-hood', title: 'Da Hood', author: '@mirrorsix', cat: 'Combat', status: 'PATCHED', tags: ['Aim Assist', 'Silent Aim'], time: '6 h ago' },
+  { id: 'arsenal', title: 'Arsenal', author: '@tenzo', cat: 'ESP', status: 'WORKING', tags: ['Silent Aim', 'Player ESP'], time: '9 h ago' },
+  { id: 'mm2', title: 'Murder Mystery 2', author: '@halcyon', cat: 'ESP', status: 'PARTIAL', tags: ['Coin Farm', 'Role ESP'], time: '14 h ago' },
+  { id: 'doors', title: 'Doors', author: '@vantablack', cat: 'Utility', status: 'WORKING', tags: ['Entity Alert', 'Auto Puzzle', 'Speed'], time: '1 d ago' },
+  { id: 'universal-hub', title: 'Universal Hub', author: '@core', cat: 'Universal', status: 'WORKING', tags: ['Anti AFK', 'Server Hop', 'FPS Boost'], time: '1 d ago' }
+];
+
+const ROWS = [
+  { name: 'Wave', version: '2.9.4', platform: 'Windows', status: 'WORKING', verified: '12 min ago' },
+  { name: 'Solara', version: '1.8.0', platform: 'Windows', status: 'PARTIAL', verified: '48 min ago' },
+  { name: 'Xeno', version: '1.3.2', platform: 'Windows', status: 'WORKING', verified: '1 h ago' },
+  { name: 'Swift', version: '4.1.7', platform: 'Windows', status: 'WORKING', verified: '3 h ago' },
+  { name: 'Delta', version: '2.0.6', platform: 'Android', status: 'PATCHED', verified: '5 h ago' },
+  { name: 'Codex', version: '6.4.1', platform: 'iOS', status: 'WORKING', verified: '9 h ago' }
+];
+
+const FAQS = [
+  { q: 'What is VALOR?', a: 'A native script executor for Roblox. It runs your own Luau scripts inside your own Roblox client: load a script hub, write and save your own scripts, set scripts to run automatically on join, and execute or re-execute as many times as you want without ever rejoining the game.' },
+  { q: 'Which platforms does it run on?', a: 'macOS today, on both Apple Silicon and Intel. A Windows version is coming in the near future. VALOR is being built cross-platform, one product across Mac and Windows.' },
+  { q: 'How do I get access?', a: 'VALOR is in active beta and access is invite based through the waitlist. Join the Discord to get on the waitlist and receive access.' },
+  { q: 'Do I need to find my own scripts?', a: 'No. VALOR ships with its own first-party script hub, so there are quality scripts ready to run the moment you open it. You can still write, save and run your own.' },
+  { q: 'How often is it updated?', a: 'Usually a few days after the game updates. A script takes a good while to come back, depending on how big the anti-cheat is.' },
+];
+
+const CATS = ['All', 'Farming', 'Combat', 'ESP', 'Utility', 'Universal'];
+const SNIPPET = 'loadstring(game:HttpGet("https://api.jnkie.com/api/v1/loaders/public/f303b97c2bb24ac31f25d957eb3e28e66c09789bf720909e0f6a5d4b29503501/download"))()';
+
+class Component extends DCLogic {
+  state = { query: '', cat: 'All', sort: 'Recently verified', copied: {}, snippetCopied: false, openFaq: -1, menuOpen: false };
+
+  constructor(props) {
+    super(props);
+    this.searchRef = React.createRef();
+    this.timers = {};
+  }
+
+  componentDidMount() {
+    this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    this.onKey = (e) => {
+      if (e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName || '')) {
+        e.preventDefault();
+        if (this.searchRef.current) this.searchRef.current.focus();
+      }
+    };
+    document.addEventListener('keydown', this.onKey);
+
+    this.onAnchor = (e) => {
+      const a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const id = a.getAttribute('href').slice(1);
+      const el = id ? document.getElementById(id) : null;
+      if (!el) return;
+      e.preventDefault();
+      const top = el.getBoundingClientRect().top + window.scrollY - (id === 'top' ? 0 : 88);
+      this.scrollTo(top);
+    };
+    document.addEventListener('click', this.onAnchor);
+
+    if (!this.reduced) this.initSmooth();
+    this.initReveal();
+    this.initSpecular();
+    this.initDrift();
+    this.initLogoLiquid();
+    this.initEdgeBlur();
+  }
+
+  initEdgeBlur() {
+    const el = document.querySelector('[data-blur-bottom]');
+    if (!el) return;
+    const apply = () => {
+      const k = Math.min(1, Math.max(0, (window.scrollY - 80) / 240));
+      // release the blur near the end of the page so the footer disclaimer stays legible
+      const left = this.maxScroll() - window.scrollY;
+      const out = Math.min(1, Math.max(0, (left - 40) / 220));
+      el.style.opacity = String((k * out).toFixed(3));
+    };
+    this.onBlurScroll = apply;
+    window.addEventListener('scroll', apply, { passive: true });
+    window.addEventListener('resize', apply, { passive: true });
+    apply();
+  }
+
+  initLogoLiquid() {
+    const host = document.querySelector('[data-logo-liquid]');
+    if (!host) return;
+    const img = host.querySelector('img');
+    if (!img || this.reduced) return;
+    const stack = document.querySelector('[data-logo-stack]') || host;
+
+    // three soft holes wandering the ellipse border; each swells and vanishes on its own period
+    const holes = [0, 1, 2].map((i) => ({
+      a: i * 2.1,               // angle around the border
+      av: 0.16 + i * 0.055,     // angular drift speed (rad/s)
+      p: i * 1.7,               // swell phase
+      pv: 0.34 + i * 0.09       // swell speed
+    }));
+    const svg = document.querySelector('svg > #liquidEdge') ? document.querySelector('#liquidEdge').ownerSVGElement : null;
+
+    // a sign that reacts: it leans away from the cursor, breathes, and now and then flickers
+    const hero = document.getElementById('top') || document.body;
+    const ptr = { x: 0, y: 0 };
+    const damp = { x: 0, y: 0 };
+    this.onLogoPtr = (e) => {
+      const b = hero.getBoundingClientRect();
+      if (!b.width) return;
+      ptr.x = (e.clientX - b.left) / b.width - 0.5;
+      ptr.y = (e.clientY - b.top) / b.height - 0.5;
+    };
+    hero.addEventListener('pointermove', this.onLogoPtr, { passive: true });
+    hero.addEventListener('pointerleave', () => { ptr.x = 0; ptr.y = 0; }, { passive: true });
+    let flickerAt = 7 + Math.random() * 12, flickerFor = 0;
+
+    let t0 = null, lastPaint = 0, paused = false, lastT = 0;
+    const tick = (ts) => {
+      this.logoRaf = requestAnimationFrame(tick);
+      if (t0 === null) t0 = ts;
+      const t = (ts - t0) / 1000;
+      const dt = Math.min(0.05, t - lastT);
+      lastT = t;
+      const r = img.getBoundingClientRect();
+      const vis = r.width && r.bottom > -100 && r.top < window.innerHeight + 100;
+      // the displacement filter is the most expensive thing on the page — stop its SMIL
+      // clock entirely once the hero leaves the viewport so scrolling stays cheap.
+      if (svg && vis === paused) {
+        paused = !vis;
+        if (paused) svg.pauseAnimations(); else svg.unpauseAnimations();
+      }
+      if (!vis) return;
+
+      // hold off until the intro animation has released the transform
+      if (t < 2.2) return;
+
+      // lean: heavy damping, a few px of travel — felt more than seen
+      const k = 1 - Math.exp(-dt / 0.32);
+      damp.x += (ptr.x - damp.x) * k;
+      damp.y += (ptr.y - damp.y) * k;
+      // lean applies to the stack so the logo and its shine move together
+      stack.style.transform = 'translate3d(' + (-damp.x * 14).toFixed(2) + 'px,' +
+        (-damp.y * 7).toFixed(2) + 'px,0) scale(' + (1 + Math.abs(damp.x) * 0.008).toFixed(4) + ')';
+
+      // breathe, with an occasional short flicker like a real sign settling
+      let glow = 0.955 + 0.045 * Math.sin(t * 0.62) + 0.014 * Math.sin(t * 1.47 + 1.2);
+      if (t > flickerAt) {
+        flickerFor = 0.26;
+        flickerAt = t + 9 + Math.random() * 16;
+      }
+      if (flickerFor > 0) {
+        flickerFor -= dt;
+        glow *= 0.9 + 0.1 * Math.abs(Math.sin(flickerFor * 46));
+      }
+      img.style.opacity = glow.toFixed(3);
+
+
+      if (ts - lastPaint < 45) return;   // ~22fps is plenty for a slow wander
+      lastPaint = ts;
+
+
+      for (let i = 0; i < holes.length; i++) {
+        const h = holes[i];
+        const ang = h.a + t * h.av + Math.sin(t * 0.23 + i) * 0.5;
+        // sit near the mask's soft edge, wobbling in and out of it
+        const rx = 0.40 + 0.075 * Math.sin(t * 0.31 + i * 1.3);
+        const ry = 0.37 + 0.075 * Math.cos(t * 0.27 + i * 2.1);
+        const swell = Math.sin(h.p + t * h.pv);
+        const size = swell > 0 ? Math.pow(swell, 1.6) * 190 : 0;
+        const s = img.style;
+        s.setProperty('--h' + (i + 1) + 'x', (50 + Math.cos(ang) * rx * 100).toFixed(2) + '%');
+        s.setProperty('--h' + (i + 1) + 'y', (50 + Math.sin(ang) * ry * 100).toFixed(2) + '%');
+        s.setProperty('--h' + (i + 1) + 'r', size.toFixed(1) + 'px');
+      }
+    };
+    this.logoRaf = requestAnimationFrame(tick);
+  }
+
+  initDrift() {
+    const wall = document.querySelector('[data-drift]');
+    if (!wall) return;
+    // tiles are authored statically in the template (4 repeats of each 5-tile cycle) —
+    // no runtime cloning, so nothing can ever pile up across hot-reloads.
+    const tracks = Array.prototype.slice.call(wall.querySelectorAll('[data-drift-track]'));
+    if (!tracks.length) return;
+    // defensive: if a track somehow has more than the authored 20 tiles, trim to 20.
+    tracks.forEach((el) => { while (el.children.length > 30) el.removeChild(el.lastChild); });
+    // seamless wrap needs authored height >= visible span + one cycle; 20 tiles at a
+    // 10-tile cycle satisfies that for this wall height.
+
+    this.drift = tracks.map((el, i) => {
+      // each column authors a 10-tile cycle twice, so one cycle = the first 10 tiles
+      const kids = Array.prototype.slice.call(el.children).slice(0, 10);
+      const cycle = kids.reduce((a, k) => a + k.offsetHeight, 0) || 1240;
+      const pseudo = ((i * 0.6180339887 + 0.35) % 1) * 2 - 1;
+      const dir = i % 2 === 0 ? 1 : -1;
+      const v = 46 * (1 + 0.28 * pseudo) * dir;
+      return { el, cycle, v, off: cycle * ((i * 0.37) % 1) };
+    });
+
+    this.driftPlane = wall.querySelector('[data-drift-plane]');
+    this.driftPtr = { x: 0, y: 0 };
+    this.driftDamp = { x: 0, y: 0 };
+    this.driftVisible = true;
+    this.driftWall = wall;
+    this.driftWallRect = wall.getBoundingClientRect();
+    this.updateDriftRect = () => { this.driftWallRect = this.driftWall.getBoundingClientRect(); };
+    window.addEventListener('scroll', this.updateDriftRect, { passive: true });
+    window.addEventListener('resize', this.updateDriftRect, { passive: true });
+
+    this.onDriftMove = (e) => {
+      const r = wall.getBoundingClientRect();
+      if (!r.width) return;
+      this.driftPtr.x = (e.clientX - r.left) / r.width - 0.5;
+      this.driftPtr.y = (e.clientY - r.top) / r.height - 0.5;
+    };
+    wall.addEventListener('pointermove', this.onDriftMove, { passive: true });
+    wall.addEventListener('pointerleave', () => { this.driftPtr.x = 0; this.driftPtr.y = 0; }, { passive: true });
+
+    if (this.reduced) {
+      this.drift.forEach((d) => { d.el.style.transform = 'translate3d(0,' + -d.off + 'px,0)'; });
+      return;
+    }
+
+    let last = null;
+    const tick = (ts) => {
+      this.driftRaf = requestAnimationFrame(tick);
+      if (last === null) last = ts;
+      const dt = Math.min(0.05, (ts - last) / 1000);
+      last = ts;
+      const wr = this.driftWallRect;
+      if (wr.bottom < -200 || wr.top > window.innerHeight + 200) return;
+
+      const k = 1 - Math.exp(-dt / 0.14);
+      this.driftDamp.x += (this.driftPtr.x * 5.5 - this.driftDamp.x) * k;
+      this.driftDamp.y += (-this.driftPtr.y * 5.5 - this.driftDamp.y) * k;
+      if (this.driftPlane) {
+        this.driftPlane.style.transform =
+          'translate(-50%,-50%) scale(1.06) rotateX(' + (26 + this.driftDamp.y).toFixed(2) +
+          'deg) rotateY(' + (-14 + this.driftDamp.x).toFixed(2) + 'deg) translateZ(-120px)';
+      }
+      for (let i = 0; i < this.drift.length; i++) {
+        const d = this.drift[i];
+        d.off = ((d.off + d.v * dt) % d.cycle + d.cycle) % d.cycle;
+        d.el.style.transform = 'translate3d(0,' + (-d.off).toFixed(2) + 'px,0)';
+      }
+    };
+    this.driftRaf = requestAnimationFrame(tick);
+  }
+
+  initSpecular() {
+    const nodes = Array.prototype.slice.call(document.querySelectorAll('[data-specular]'));
+    if (!nodes.length) return;
+
+    this.spec = nodes.map((el) => {
+      const th = parseFloat(el.dataset.thickness) || 1;
+      const r = (parseFloat(el.dataset.radius) || 10) + 'px';
+      let ov = el.querySelector(':scope > [data-spec-layer]');
+      if (!ov) {
+        ov = document.createElement('span');
+        ov.setAttribute('data-spec-layer', '');
+        ov.setAttribute('aria-hidden', 'true');
+        el.appendChild(ov);
+      }
+      ov.style.cssText = 'position:absolute;inset:0;border-radius:' + r + ';padding:' + th + 'px;pointer-events:none;opacity:0;' +
+        'transition:opacity 260ms cubic-bezier(0.16,1,0.3,1);' +
+        '-webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);-webkit-mask-composite:xor;' +
+        'mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);mask-composite:exclude;';
+      return {
+        el,
+        ov,
+        shine: parseFloat(el.dataset.shine) || 110,
+        fade: parseFloat(el.dataset.fade) || 60,
+        prox: parseFloat(el.dataset.proximity) || 240
+      };
+    });
+
+    if (this.reduced) return;
+
+    this.onSpecMove = (e) => {
+      for (let i = 0; i < this.spec.length; i++) {
+        const s = this.spec[i];
+        const r = s.el.getBoundingClientRect();
+        if (!r.width) continue;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const dx = Math.max(Math.abs(e.clientX - cx) - r.width / 2, 0);
+        const dy = Math.max(Math.abs(e.clientY - cy) - r.height / 2, 0);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const k = Math.max(0, 1 - dist / s.prox);
+        if (k <= 0.001) {
+          if (s.on) { s.ov.style.opacity = '0'; s.on = false; }
+          continue;
+        }
+        s.on = true;
+        const x = Math.round(e.clientX - r.left);
+        const y = Math.round(e.clientY - r.top);
+        s.ov.style.background = 'radial-gradient(' + s.shine + 'px circle at ' + x + 'px ' + y + 'px, rgba(255,255,255,0.95), rgba(255,255,255,0.35) ' + (s.fade * 0.45) + '%, rgba(255,255,255,0) ' + s.fade + '%)';
+        s.ov.style.opacity = String(Math.pow(k, 1.4).toFixed(3));
+      }
+    };
+    window.addEventListener('pointermove', this.onSpecMove, { passive: true });
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onKey);
+    document.removeEventListener('click', this.onAnchor);
+    if (this.onWheel) window.removeEventListener('wheel', this.onWheel);
+    if (this.onNativeScroll) window.removeEventListener('scroll', this.onNativeScroll);
+    if (this.observeReveals) {
+      window.removeEventListener('scroll', this.observeReveals);
+      window.removeEventListener('resize', this.observeReveals);
+    }
+    clearInterval(this.revealTimer);
+    if (this.onSpecMove) window.removeEventListener('pointermove', this.onSpecMove);
+    if (this.driftRaf) cancelAnimationFrame(this.driftRaf);
+    if (this.logoRaf) cancelAnimationFrame(this.logoRaf);
+    if (this.onLogoPtr) {
+      const hero = document.getElementById('top');
+      if (hero) hero.removeEventListener('pointermove', this.onLogoPtr);
+    }
+    if (this.updateDriftRect) {
+      window.removeEventListener('scroll', this.updateDriftRect);
+      window.removeEventListener('resize', this.updateDriftRect);
+    }
+    if (this.onBlurScroll) window.removeEventListener('scroll', this.onBlurScroll);
+    Object.keys(this.timers).forEach((k) => clearTimeout(this.timers[k]));
+  }
+
+  maxScroll() {
+    return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  }
+
+  scrollTo(y) {
+    if (this.reduced || !this.smoothOn) {
+      window.scrollTo(0, Math.max(0, Math.min(this.maxScroll(), y)));
+      return;
+    }
+    this.target = Math.max(0, Math.min(this.maxScroll(), y));
+    this.run();
+  }
+
+  run() {
+    if (this.running) return;
+    this.running = true;
+    const step = () => {
+      const d = this.target - this.current;
+      if (Math.abs(d) < 0.5) {
+        this.current = this.target;
+        window.scrollTo(0, this.current);
+        this.running = false;
+        return;
+      }
+      this.current += d * 0.052;
+      this.locked = true;
+      window.scrollTo(0, this.current);
+      this.locked = false;
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  initSmooth() {
+    this.smoothOn = true;
+    this.target = window.scrollY;
+    this.current = window.scrollY;
+
+    this.onWheel = (e) => {
+      if (e.ctrlKey || e.metaKey) return;
+      e.preventDefault();
+      this.target = Math.max(0, Math.min(this.maxScroll(), this.target + e.deltaY * 0.9));
+      this.run();
+    };
+    window.addEventListener('wheel', this.onWheel, { passive: false });
+
+    this.onNativeScroll = () => {
+      if (this.running || this.locked) return;
+      this.target = this.current = window.scrollY;
+    };
+    window.addEventListener('scroll', this.onNativeScroll, { passive: true });
+  }
+
+  initReveal() {
+    if (this.reduced) {
+      document.querySelectorAll('[data-reveal],[data-hold]').forEach((n) => n.setAttribute('data-in', ''));
+      return;
+    }
+    this.stageSection = (section) => {
+      if (section.__staged) return;
+      section.__staged = true;
+      const kids = [];
+      Array.prototype.forEach.call(section.children, (row) => {
+        if (row.children && row.children.length > 1 && row.children.length <= 8) {
+          Array.prototype.forEach.call(row.children, (c) => kids.push(c));
+        } else {
+          kids.push(row);
+        }
+      });
+      const e = this.entrance();
+      kids.forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(' + e.lift + 'px)';
+        const d = i * e.stagger;
+        el.style.transition = 'opacity ' + e.dur + 'ms cubic-bezier(0.22,1,0.36,1) ' + d + 'ms, transform ' + e.dur + 'ms cubic-bezier(0.22,1,0.36,1) ' + d + 'ms';
+      });
+      section.__kids = kids;
+    };
+
+    this.runSection = (section) => {
+      if (section.__kids) {
+        section.__kids.forEach((el) => {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    };
+
+    document.querySelectorAll('[data-reveal]').forEach((sec) => this.stageSection(sec));
+    this.applyAtmosphere();
+    this.__lastEntrance = this.props.entrance || 'Cascade';
+
+    this.observeReveals = () => {
+      // [data-hold] elements are in view at load but stay hidden until the first scroll,
+      // so the landing state is just the logo over the moving background.
+      if (window.scrollY > 30) {
+        document.querySelectorAll('[data-hold]:not([data-in])').forEach((n) => n.setAttribute('data-in', ''));
+      }
+      const pending = document.querySelectorAll('[data-reveal]:not([data-in])');
+      for (let i = 0; i < pending.length; i++) {
+        const r = pending[i].getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.82 && r.bottom > 0) {
+          pending[i].setAttribute('data-in', '');
+          this.runSection(pending[i]);
+        }
+      }
+    };
+    window.addEventListener('scroll', this.observeReveals, { passive: true });
+    window.addEventListener('resize', this.observeReveals, { passive: true });
+    this.revealTimer = setInterval(this.observeReveals, 500);
+    this.observeReveals();
+  }
+
+  componentDidUpdate() {
+    if (this.observeReveals) this.observeReveals();
+  }
+
+  copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(() => {});
+  }
+
+  flag(key) {
+    clearTimeout(this.timers[key]);
+    this.timers[key] = setTimeout(() => {
+      this.setState((s) => {
+        const c = Object.assign({}, s.copied);
+        delete c[key];
+        return { copied: c };
+      });
+    }, 1500);
+    this.setState((s) => ({ copied: Object.assign({}, s.copied, { [key]: true }) }));
+  }
+
+  chipStyle(active) {
+    const base = 'height:34px;padding:0 14px;border-radius:8px;font-size:0.8125rem;font-weight:500;cursor:pointer;transition:background-color 180ms var(--ease),border-color 180ms var(--ease),color 180ms var(--ease);';
+    return active
+      ? base + 'background:var(--accent-wash);border:1px solid var(--accent);color:var(--text-primary);'
+      : base + 'background:var(--bg-surface-2);border:1px solid var(--border-hairline);color:var(--text-secondary);';
+  }
+
+  entrance() {
+    const map = {
+      Immediate: { dur: 340, stagger: 0, lift: 8 },
+      Cascade: { dur: 620, stagger: 110, lift: 14 },
+      Procession: { dur: 980, stagger: 240, lift: 26 }
+    };
+    return map[this.props.entrance] || map.Cascade;
+  }
+
+  atmosphere() {
+    const map = {
+      Dormant: { crt: 0.14, pool: 0.45, brightness: 0.4, bloom: 0.3, speed: 0.2, scan: 0.5, amp: 0.18 },
+      Signal: { crt: 0.34, pool: 1, brightness: 0.58, bloom: 0.55, speed: 0.34, scan: 0.42, amp: 0.24 },
+      Storm: { crt: 0.62, pool: 1.5, brightness: 0.82, bloom: 1.05, speed: 0.6, scan: 0.3, amp: 0.36 }
+    };
+    return map[this.props.atmosphere] || map.Signal;
+  }
+
+  pulse() {
+    const map = {
+      Still: { scrambleSpeed: 62, idleMin: 0, idleMax: 0 },
+      Occasional: { scrambleSpeed: 22, idleMin: 3200, idleMax: 8600 },
+      Restless: { scrambleSpeed: 16, idleMin: 900, idleMax: 2600 }
+    };
+    return map[this.props.pulse] || map.Occasional;
+  }
+
+  applyAtmosphere() {
+    const a = this.atmosphere();
+    document.querySelectorAll('[data-atmo="crt"]').forEach((el) => { el.style.opacity = a.crt; });
+    document.querySelectorAll('[data-atmo="pool"]').forEach((el) => { el.style.opacity = a.pool; });
+  }
+
+  componentDidUpdate() {
+    this.applyAtmosphere();
+    const e = this.props.entrance || 'Cascade';
+    if (this.__lastEntrance !== undefined && this.__lastEntrance !== e) {
+      document.querySelectorAll('[data-reveal]').forEach((sec) => {
+        sec.__staged = false;
+        this.stageSection(sec);
+        if (sec.hasAttribute('data-in')) requestAnimationFrame(() => this.runSection(sec));
+      });
+    }
+    this.__lastEntrance = e;
+  }
+
+  renderVals() {
+    const { query, cat, sort, copied, snippetCopied, openFaq, menuOpen } = this.state;
+    const atmo = this.atmosphere();
+    const pulse = this.pulse();
+    const q = query.trim().toLowerCase();
+
+    let list = ENTRIES.filter((e) => {
+      const catOk = cat === 'All' || e.cat === cat;
+      const hay = (e.title + ' ' + e.author + ' ' + e.cat + ' ' + e.tags.join(' ')).toLowerCase();
+      return catOk && (!q || hay.indexOf(q) !== -1);
+    });
+    if (sort === 'A to Z') list = list.slice().sort((a, b) => a.title.localeCompare(b.title));
+
+    return {
+      tilt: 5,
+      grad: { colors: ['#C8102E', '#FF8497', '#FFE6EA', '#FF8497', '#C8102E'], animationSpeed: 6, glow: true },
+      glow: {
+        maxTilt: 5,
+        edgeSensitivity: 24,
+        glowColor: '350 82 68',
+        backgroundColor: '#0E0E13',
+        borderRadius: 14,
+        glowRadius: 44,
+        glowIntensity: 1,
+        coneSpread: 25,
+        fillOpacity: 0.32,
+        colors: ['#C8102E', '#FF8497', '#EFE6E9']
+      },
+      crt: {
+        color: '#6E0818',
+        backgroundColor: '#07070A',
+        speed: atmo.speed,
+        curvature: 0.18,
+        scanlineStrength: atmo.scan,
+        scanlineFrequency: 220,
+        waveAmplitude: atmo.amp,
+        waveFrequency: 2.3,
+        bloom: atmo.bloom,
+        bloomRadius: 1,
+        noise: 0.06,
+        vignette: 0.9,
+        brightness: atmo.brightness,
+        pixelation: 1,
+        rgbShift: 0.01,
+        mouseReact: true,
+        mouseStrength: 0.35,
+        dpr: 1,
+        fps: 30
+      },
+      word: {
+        text: 'VALOR',
+        animateOn: 'view',
+        sequential: true,
+        revealDirection: 'center',
+        speed: 62,
+        scrambleSpeed: pulse.scrambleSpeed,
+        idleMin: pulse.idleMin,
+        idleMax: pulse.idleMax,
+        characters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#%$&*',
+        encryptedStyle: { color: '#C8102E', opacity: 0.85 }
+      },
+      cards: list.map((e) => {
+        const isCopied = !!copied[e.id];
+        return {
+          title: e.title,
+          author: e.author,
+          statusLabel: STATUS[e.status].label,
+          statusColor: STATUS[e.status].color,
+          tags: e.tags.map((name) => ({ name })),
+          time: e.time,
+          copied: isCopied,
+          notCopied: !isCopied,
+          copyLabel: isCopied ? 'copied' : 'copy',
+          onCopy: () => {
+            this.copyText('loadstring(game:HttpGet("https://scripthub.gg/s/' + e.id + '.lua"))()');
+            this.flag(e.id);
+          }
+        };
+      }),
+      rows: ROWS.map((r) => ({
+        name: r.name,
+        version: r.version,
+        platform: r.platform,
+        statusLabel: STATUS[r.status].label,
+        statusColor: STATUS[r.status].color,
+        verified: r.verified
+      })),
+      faqs: FAQS.map((f, i) => ({
+        q: f.q,
+        a: f.a,
+        rows: openFaq === i ? '1fr' : '0fr',
+        opacity: openFaq === i ? 1 : 0,
+        iconTransform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)',
+        onToggle: () => this.setState((s) => ({ openFaq: s.openFaq === i ? -1 : i }))
+      })),
+      chips: CATS.map((c) => ({
+        label: c,
+        style: this.chipStyle(c === cat),
+        onClick: () => this.setState({ cat: c })
+      })),
+      menuDisplay: menuOpen ? 'flex' : 'none',
+      onToggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      onCloseMenu: () => this.setState({ menuOpen: false }),
+      resultLabel: list.length + ' of ' + ENTRIES.length + ' shown',
+      searchRef: this.searchRef,
+      onSearch: (e) => this.setState({ query: e.target.value }),
+      onSort: (e) => this.setState({ sort: e.target.value }),
+      loaderCopied: !!copied.loader,
+      loaderNotCopied: !copied.loader,
+      loaderLabel: copied.loader ? 'copied' : 'copy',
+      onCopyLoader: () => { this.copyText(SNIPPET); this.flag('loader'); },
+      snippetCopied,
+      snippetNotCopied: !snippetCopied,
+      snippetLabel: snippetCopied ? 'copied' : 'copy',
+      onCopySnippet: () => {
+        this.copyText(SNIPPET);
+        this.setState({ snippetCopied: true });
+        clearTimeout(this.timers.snippet);
+        this.timers.snippet = setTimeout(() => this.setState({ snippetCopied: false }), 1500);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
