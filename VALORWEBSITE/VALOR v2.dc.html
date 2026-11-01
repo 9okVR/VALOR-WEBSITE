@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="assets/hub-data.js"></script>
 </head>
 <body>
 <x-dc>
@@ -72,6 +73,48 @@ table{border-collapse:collapse}
 [data-ic-check]{stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset 260ms cubic-bezier(.22,1,.36,1)}
 [data-ld-copy].is-done [data-ic-check]{stroke-dashoffset:0;transition:stroke-dashoffset 520ms cubic-bezier(.22,1,.36,1) 160ms}
 [data-drift].is-wave [data-drift-track] > div > div::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;background:rgba(190,14,44,.30);box-shadow:inset 0 0 0 2px rgba(255,86,116,.95),inset 0 0 28px rgba(255,40,70,.55);opacity:0;animation:tileWave 900ms cubic-bezier(.22,1,.36,1) var(--wd,0ms) both}
+/* ---- Inside the hub: a copy of the in-game menu (docs/VALOR_THEME.md: rail 9,9,12 / bg 13,13,17 / cardHi 26,26,32 /
+   off 32,30,35 / accent 200,16,46 / accentHi 232,42,74 / stroke 48,20,26 / text 242,238,240 / dim 140,132,138 /
+   faint 96,90,96; radius 5; tab = underline only; switches slide on InOut 180 ms) ---- */
+[data-hub-games]{display:flex;gap:8px;overflow-x:auto;padding:4px 24px 20px;margin:0 -24px 4px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 28px,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(to right,transparent,#000 28px,#000 calc(100% - 28px),transparent)}
+[data-hub-games]::-webkit-scrollbar{display:none}
+.hub-chip{flex:0 0 auto;display:flex;align-items:center;gap:9px;height:42px;padding:0 14px 0 5px;border:0;border-radius:999px;cursor:pointer;
+  background:#0E0E13;color:var(--text-secondary);font-size:0.8125rem;font-weight:500;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.07);
+  transition:background-color 180ms var(--ease),color 180ms var(--ease),box-shadow 180ms var(--ease)}
+.hub-chip:hover{color:var(--text-primary);background:#15151C}
+.hub-chip img,.hub-chip .hub-chip-v{width:32px;height:32px;border-radius:999px;object-fit:cover;flex:0 0 auto}
+.hub-chip .hub-chip-v{display:grid;place-items:center;background:rgba(200,16,46,0.12)}
+.hub-chip .hub-chip-v img{width:15px;height:15px;object-fit:contain;border-radius:0}
+.hub-chip.is-on{color:rgb(242,238,240);background:rgba(200,16,46,0.10);box-shadow:inset 0 0 0 1px rgba(200,16,46,0.75)}
+.hub-win{position:relative;max-width:600px;height:470px;margin:0 auto;border-radius:6px;overflow:hidden;background:rgb(13,13,17);
+  box-shadow:inset 0 0 0 1px rgba(48,20,26,0.75),0 50px 100px -40px rgba(0,0,0,0.9)}
+.hub-inner{display:flex;flex-direction:column;height:100%;transition:opacity 220ms cubic-bezier(.65,0,.35,1)}
+.hub-inner.is-swap{opacity:0}
+.hub-head{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;height:56px;padding:0 18px}
+.hub-word{font-family:'Archivo',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.04em;color:rgb(242,238,240)}
+.hub-word span{color:rgb(200,16,46)}
+.hub-sub{margin-top:2px;font-size:0.5625rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgb(96,90,96)}
+.hub-status{font-family:'IBM Plex Mono',monospace;font-size:0.625rem;letter-spacing:0.06em;color:rgb(140,132,138);text-align:right;line-height:1.5}
+.hub-status b{font-weight:500;color:rgb(232,42,74)}
+.hub-tabs{flex:0 0 auto;display:flex;gap:20px;height:34px;padding:0 18px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(48,20,26,0.7)}
+.hub-tabs::-webkit-scrollbar{display:none}
+.hub-tab{flex:0 0 auto;border:0;background:none;padding:0;cursor:pointer;font-size:0.75rem;font-weight:600;color:rgb(140,132,138);transition:color 180ms var(--ease)}
+.hub-tab:hover{color:rgb(242,238,240)}
+.hub-tab.is-on{color:rgb(242,238,240);box-shadow:inset 0 -2px 0 rgb(200,16,46)}
+.hub-body{flex:1 1 auto;overflow-y:auto;padding:4px 0 12px;scrollbar-width:thin;scrollbar-color:rgb(120,10,28) transparent}
+.hub-body::-webkit-scrollbar{width:4px}.hub-body::-webkit-scrollbar-thumb{background:rgb(120,10,28);border-radius:4px}
+.hub-row{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;height:40px;padding:0 18px;border:0;cursor:pointer;
+  background:transparent;border-bottom:1px solid rgba(48,20,26,0.45);text-align:left;color:rgb(242,238,240);font-size:0.78125rem;font-weight:500;transition:background-color 180ms var(--ease)}
+.hub-row:hover{background:rgb(26,26,32)}
+.hub-row span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hub-sw{position:relative;flex:0 0 auto;width:30px;height:16px;border-radius:999px;background:rgb(32,30,35);transition:background-color 180ms cubic-bezier(.65,0,.35,1)}
+.hub-sw::after{content:"";position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:rgb(140,132,138);
+  transition:transform 180ms cubic-bezier(.65,0,.35,1),background-color 180ms cubic-bezier(.65,0,.35,1)}
+.hub-sw.is-on{background:rgb(200,16,46)}
+.hub-sw.is-on::after{transform:translateX(14px);background:#fff}
+[data-drift-track] > div > div{cursor:pointer}
+@media (max-width:620px){.hub-win{height:460px}.hub-status{font-size:0.5625rem}}
 [data-loader-code]::-webkit-scrollbar{display:none}
 [data-scroll]::-webkit-scrollbar{height:6px}
 [data-scroll]::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
@@ -209,26 +252,16 @@ table{border-collapse:collapse}
   <section id="showcase" data-scene data-navsec="showcase" style="padding:120px 0">
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:40px;opacity:clamp(0, calc((var(--p) - 0.00) * 3), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.00) * 3), 1) * 32px))">
       <p style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 18px">Showcase</p>
-      <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0 0 16px">Inside VALOR</h2>
-      <p style="margin:0;max-width:48ch;font-size:1.0625rem;line-height:1.6;color:var(--text-secondary)">{{ showCaption }}</p>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0 0 16px">Inside the hub</h2>
+      <p style="margin:0;max-width:48ch;font-size:1.0625rem;line-height:1.6;color:var(--text-secondary)">Pick a game. This is the menu you get in it: the real tabs and switches, and when it was last updated.</p>
     </div>
-
-    <div role="tablist" aria-label="Showcase screens" style="display:flex;justify-content:center;margin-bottom:28px;opacity:clamp(0, calc((var(--p) - 0.08) * 3), 1)">
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:5px;border-radius:999px;background:#0E0E13;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06)">
-        <sc-for list="{{ showTabs }}" as="tab" hint-placeholder-count="4">
-          <button type="button" role="tab" aria-selected="{{ tab.selected }}" onClick="{{ tab.onClick }}" style="height:38px;padding:0 18px;border:0;border-radius:999px;cursor:pointer;font-size:0.875rem;font-weight:500;background:{{ tab.bg }};color:{{ tab.color }};transition:background-color 200ms var(--ease),color 200ms var(--ease)" style-hover="color:var(--text-primary)">{{ tab.label }}</button>
-        </sc-for>
+    <div data-hub style="max-width:860px;margin:0 auto;opacity:clamp(0, calc((var(--p) - 0.12) * 2.6), 1);transform:translateY(calc((1 - var(--p)) * 40px))">
+      <div data-hub-games role="tablist" aria-label="Games"></div>
+      <div style="position:relative">
+        <div aria-hidden="true" style="position:absolute;left:10%;right:10%;top:12%;bottom:-8%;background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(110,8,24,0.30), transparent 72%);filter:blur(50px);pointer-events:none"></div>
+        <div data-hub-window></div>
       </div>
-    </div>
-
-    <div style="position:relative;max-width:1080px;margin:0 auto;opacity:clamp(0, calc((var(--p) - 0.16) * 2.4), 1);transform:translateY(calc((1 - var(--p)) * 60px)) scale(calc(0.94 + var(--p) * 0.06))">
-      <div aria-hidden="true" style="position:absolute;left:8%;right:8%;top:10%;bottom:-6%;background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(110,8,24,0.30), transparent 72%);filter:blur(50px);pointer-events:none"></div>
-      <div style="position:relative;display:grid;border-radius:16px;overflow:hidden;background:#07070A;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08), 0 50px 100px -40px rgba(0,0,0,0.9)">
-        <img src="assets/show-home.png" alt="The VALOR home dashboard with recent scripts and attach status" style="grid-area:1 / 1;display:block;width:100%;height:auto;opacity:{{ show0 }};transition:opacity 520ms cubic-bezier(0.22,1,0.36,1)">
-        <img src="assets/show-editor.png" alt="The VALOR script editor with tabs, auto-execute and console" style="grid-area:1 / 1;display:block;width:100%;height:auto;opacity:{{ show1 }};transition:opacity 520ms cubic-bezier(0.22,1,0.36,1)">
-        <img src="assets/show-scripts.png" alt="The VALOR script hub with trending scripts and filters" style="grid-area:1 / 1;display:block;width:100%;height:auto;opacity:{{ show2 }};transition:opacity 520ms cubic-bezier(0.22,1,0.36,1)">
-        <img src="assets/show-accounts.png" alt="The VALOR account manager with saved accounts and a running instance" style="grid-area:1 / 1;display:block;width:100%;height:auto;opacity:{{ show3 }};transition:opacity 520ms cubic-bezier(0.22,1,0.36,1)">
-      </div>
+      <p style="margin:20px 0 0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.08em;color:var(--text-tertiary)">TAP A GAME ON THE WALL BELOW TO OPEN IT HERE &middot; SWITCHES ARE A PREVIEW</p>
     </div>
   </section>
 
@@ -522,8 +555,8 @@ table{border-collapse:collapse}
         </div>
       </div>
       <div data-lib-shade aria-hidden="true" style="position:absolute;inset:-2px -32px;pointer-events:none;background:radial-gradient(40% 46% at 50% 52%, rgba(8,8,11,.94) 0%, rgba(8,8,11,.78) 48%, rgba(8,8,11,0) 100%), linear-gradient(to bottom, #08080B 0%, rgba(8,8,11,0) 14%, rgba(8,8,11,0) 84%, #08080B 100%), linear-gradient(to right, #08080B 0%, rgba(8,8,11,0) 9%, rgba(8,8,11,0) 91%, #08080B 100%)"></div>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 4%;opacity:clamp(0, calc((var(--p) - 0.18) * 3), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.18) * 3), 1) * 24px))">
-        <div style="width:min(560px,100%);display:flex;flex-direction:column;align-items:center">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 4%;pointer-events:none;opacity:clamp(0, calc((var(--p) - 0.18) * 3), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.18) * 3), 1) * 24px))">
+        <div style="width:min(560px,100%);display:flex;flex-direction:column;align-items:center;pointer-events:auto">
           <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:3.5rem;line-height:1.0;letter-spacing:-0.045em;color:var(--text-primary);margin:0 0 32px">Every game.<br>One line.<br><span style="color:#E37A8B">Free.</span></h2>
           <div data-loader style="position:relative;width:100%;max-width:520px">
           <div data-ld-bar data-specular data-radius="18" data-shine="140" data-fade="62" data-thickness="1" data-proximity="240" style="position:relative;display:flex;align-items:center;gap:16px;height:72px;padding:0 10px 0 20px;border-radius:18px;background:linear-gradient(180deg,#14141A,#0B0B0F);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.09), inset 0 1px 0 rgba(255,255,255,0.11), inset 0 -12px 24px -16px rgba(0,0,0,0.7), 0 24px 48px -24px rgba(0,0,0,0.9)">
@@ -552,27 +585,31 @@ table{border-collapse:collapse}
   <section id="guide" data-scene data-navsec="guide" style="padding:120px 0">
     <div style="max-width:640px;margin-bottom:72px;opacity:clamp(0, calc((var(--p) - 0.05) * 4), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.05) * 5), 1) * 12px))">
       <p style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 18px">Guide</p>
-      <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0">Up and running in four steps</h2>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0">Up and running on your phone</h2>
     </div>
     <ol data-guide-grid style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px">
       <li style="min-width:0;opacity:clamp(0, calc((var(--p) - 0.15) * 5), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.15) * 5), 1) * 12px))">
-        <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1;letter-spacing:-0.035em;color:var(--text-primary)">Join</h3>
-        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">Join the Discord. After the 72-hour trial, grab your free key there.</p>
+        <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1;letter-spacing:-0.035em;color:var(--text-primary)">Get an executor</h3>
+        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">On a phone, Delta (Android or iPhone). On a PC, Potassium. Arceus X, Real, Madium, Volt and Wave work too.</p>
       </li>
       <li style="min-width:0;opacity:clamp(0, calc((var(--p) - 0.25) * 5), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.25) * 5), 1) * 12px))">
         <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1;letter-spacing:-0.035em;color:var(--text-primary)">Copy</h3>
-        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">Copy the VALOR HUB loader from the script hub above.</p>
+        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">Copy the loader from the script hub above. It&rsquo;s one line for every game.</p>
       </li>
       <li style="min-width:0;opacity:clamp(0, calc((var(--p) - 0.35) * 5), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.35) * 5), 1) * 12px))">
         <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1;letter-spacing:-0.035em;color:var(--text-primary)">Paste</h3>
-        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">Join a supported game and paste the loader into your executor.</p>
+        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">Open the game, open Delta, paste the line into its editor and tap Execute.</p>
       </li>
       <li style="min-width:0;opacity:clamp(0, calc((var(--p) - 0.45) * 5), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.45) * 5), 1) * 12px))">
-        <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1;letter-spacing:-0.035em;color:var(--text-primary)">Run</h3>
-        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">Execute it and the panel for that game opens.</p>
+        <h3 style="margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1;letter-spacing:-0.035em;color:var(--text-primary)">Play</h3>
+        <p style="margin:0;max-width:30ch;font-size:0.9375rem;line-height:1.6;color:var(--text-secondary)">The menu for that game opens. No key for your first 3 days, then a free one from our Discord.</p>
       </li>
     </ol>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:64px;opacity:clamp(0, calc((var(--p) - 0.6) * 4), 1)">
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:56px;padding-top:24px;border-top:1px solid var(--border-hairline);opacity:clamp(0, calc((var(--p) - 0.5) * 4), 1)">
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;color:var(--text-tertiary)"><span style="color:var(--text-primary)">WORKS ON</span>&nbsp;&nbsp;Delta &middot; Potassium &middot; Arceus X &middot; Real &middot; Madium &middot; Volt &middot; Wave</p>
+      <p style="margin:0;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;color:var(--text-tertiary)"><span style="color:#E37A8B">PARTLY</span>&nbsp;&nbsp;Xeno &middot; Solara &mdash; they lack functions some games need</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:40px;opacity:clamp(0, calc((var(--p) - 0.6) * 4), 1)">
       <a href="#library" style="display:flex;align-items:center;height:44px;padding:0 22px;border-radius:999px;background:#8E0A20;color:#FFF1F3;font-size:0.9375rem;font-weight:500;text-decoration:none;transition:background-color 180ms var(--ease)" style-hover="background:#A30E27;text-decoration:none">Get the scripts</a>
       <a href="https://discord.gg/GSAHydBefQ" target="_blank" rel="noreferrer noopener" style="display:flex;align-items:center;height:44px;padding:0 22px;border-radius:999px;background:#18181E;color:var(--text-primary);font-size:0.9375rem;font-weight:500;text-decoration:none;transition:background-color 180ms var(--ease)" style-hover="background:#222229;text-decoration:none">Join the Discord</a>
     </div>
@@ -858,14 +895,6 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.startScenes();
-    this.showTimer = setInterval(() => {
-      if (this.state.showManual || document.hidden) return;
-      const el = document.getElementById('showcase');
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      if (r.top > window.innerHeight || r.bottom < 0) return;
-      this.setState((st) => ({ showIdx: (st.showIdx + 1) % 4 }));
-    }, 5000);
 
     this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -894,6 +923,7 @@ class Component extends DCLogic {
     this.initSpecular();
     this.initDrift();
     this.initLoaderFx();
+    this.initHub();
     this.initLogoLiquid();
     this.initEdgeBlur();
   }
@@ -1115,6 +1145,68 @@ class Component extends DCLogic {
       const min = Math.min.apply(null, ds);
       tiles.forEach((t, i) => t.style.setProperty('--wd', Math.round(60 + (ds[i] - min) * 0.55) + 'ms'));
       replay(wall, 'is-wave', 2200);
+    });
+  }
+
+  // Inside the hub: the in-game menu of the picked game (assets/hub-data.js, read from the panels), and the game wall
+  // below opens a game here when you tap its tile.
+  initHub() {
+    const data = window.VALOR_HUB_DATA;
+    const gamesEl = document.querySelector('[data-hub-games]');
+    const win = document.querySelector('[data-hub-window]');
+    if (!data || !gamesEl || !win) return;
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    const when = (d) => { if (!d) return ''; const p = d.split('-'); return MON[+p[1] - 1] + ' ' + (+p[2]); };
+    gamesEl.innerHTML = data.map((g, i) => '<button type="button" class="hub-chip" role="tab" aria-selected="false" data-i="' + i + '">' +
+      (g.thumb ? '<img src="' + g.thumb + '" alt="" loading="lazy">' : '<span class="hub-chip-v"><img src="assets/valor-v.png" alt=""></span>') +
+      '<span>' + esc(g.name) + '</span></button>').join('');
+    win.innerHTML = '<div class="hub-win"><div class="hub-inner"></div></div>';
+    const inner = win.querySelector('.hub-inner');
+    let cur = -1, tab = 0;
+    const render = () => {
+      const g = data[cur];
+      const total = g.tabs.reduce((a, t) => a + t[1].length, 0);
+      inner.innerHTML =
+        '<div class="hub-head"><div><div class="hub-word"><span>VALOR</span> HUB</div><div class="hub-sub">' + esc(g.name) + '</div></div>' +
+        '<div class="hub-status"><b>WORKING</b> &middot; UPDATED ' + when(g.updated) + '<br>' + total + ' SWITCHES</div></div>' +
+        '<div class="hub-tabs" role="tablist">' + g.tabs.map((t, j) => '<button type="button" class="hub-tab' + (j === tab ? ' is-on' : '') + '" data-t="' + j + '">' + esc(t[0]) + '</button>').join('') + '</div>' +
+        '<div class="hub-body">' + g.tabs[tab][1].map((r) => '<button type="button" class="hub-row" aria-pressed="' + (r[1] ? 'true' : 'false') + '"><span>' + esc(r[0]) + '</span><i class="hub-sw' + (r[1] ? ' is-on' : '') + '"></i></button>').join('') + '</div>';
+    };
+    const select = (i, animate) => {
+      if (i === cur) return;
+      cur = i;
+      tab = data[i].tabs.reduce((b, t, j, all) => (t[1].length > all[b][1].length ? j : b), 0);   // open on the fullest tab
+      Array.prototype.forEach.call(gamesEl.children, (c, j) => { c.classList.toggle('is-on', j === i); c.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
+      const chip = gamesEl.children[i];
+      if (chip) gamesEl.scrollTo({ left: chip.offsetLeft - gamesEl.clientWidth / 2 + chip.offsetWidth / 2, behavior: animate ? 'smooth' : 'auto' });
+      if (!animate || this.reduced) { render(); return; }
+      inner.classList.add('is-swap');
+      clearTimeout(this.hubT);
+      this.hubT = setTimeout(() => { render(); inner.classList.remove('is-swap'); }, 220);
+    };
+    gamesEl.addEventListener('click', (e) => { const c = e.target.closest('.hub-chip'); if (c) select(+c.dataset.i, true); });
+    inner.addEventListener('click', (e) => {
+      const t = e.target.closest('.hub-tab');
+      if (t) { tab = +t.dataset.t; render(); return; }
+      const r = e.target.closest('.hub-row');
+      if (!r) return;
+      const sw = r.querySelector('.hub-sw');
+      const on = !sw.classList.contains('is-on');
+      sw.classList.toggle('is-on', on);
+      r.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    select(0, false);
+    const wall = document.querySelector('[data-drift]');
+    if (wall) wall.addEventListener('click', (e) => {
+      const tile = e.target.closest('[data-drift-track] > div');
+      const bg = tile && tile.querySelector('[style*="thumb-"]');
+      const m = bg && bg.getAttribute('style').match(/thumb-([a-z0-9-]+)\.jpg/);
+      const i = m ? data.findIndex((g) => g.id === m[1]) : -1;
+      if (i < 0) return;
+      select(i, false);
+      const sc = document.getElementById('showcase');
+      if (sc) this.scrollTo(sc.getBoundingClientRect().top + window.scrollY - 88);
     });
   }
 
