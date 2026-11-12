@@ -186,6 +186,7 @@ table{border-collapse:collapse}
     <a data-hide-sm data-navlink="why" href="#why" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Why VALOR</a>
     <a data-hide-sm data-navlink="guide" href="#guide" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Guide</a>
     <a data-hide-sm href="Database.html" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Database</a>
+    <a data-hide-sm href="Status.html" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Status</a>
     <a data-hide-sm data-navlink="faq" href="#faq" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">FAQ</a>
     <a data-hide-sm data-navlink="discord" href="#discord" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Discord</a>
     <a href="#library" style="display:flex;align-items:center;height:36px;padding:0 14px;background:#8E0A20;border:1px solid rgba(200,16,46,0.45);border-radius:9px;font-size:0.8125rem;font-weight:500;color:#FFF1F3;text-decoration:none;transition:background-color 180ms var(--ease),box-shadow 180ms var(--ease)" style-hover="background:#A30E27;box-shadow:0 0 22px rgba(200,16,46,0.30);text-decoration:none">Get the scripts</a>
@@ -200,6 +201,7 @@ table{border-collapse:collapse}
     <a href="#why" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Why VALOR</a>
     <a href="#guide" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Guide</a>
     <a href="Database.html" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Database</a>
+    <a href="Status.html" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Status</a>
     <a href="#faq" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">FAQ</a>
     <a href="#discord" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Discord</a>
     <a href="#terms" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Terms of Service</a>
@@ -784,6 +786,7 @@ table{border-collapse:collapse}
         <a href="#why" style="font-size:0.875rem">Why VALOR</a>
         <a href="#library" style="font-size:0.875rem">Script hub</a>
         <a href="Database.html" style="font-size:0.875rem">Database</a>
+        <a href="Status.html" style="font-size:0.875rem">Status</a>
         <a href="Download.dc.html" target="_blank" rel="noopener" style="font-size:0.875rem">Mac executor</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -1168,12 +1171,23 @@ class Component extends DCLogic {
     win.innerHTML = '<div class="hub-win"><div class="hub-inner"></div></div>';
     const inner = win.querySelector('.hub-inner');
     let cur = -1, tab = 0;
+    // (2026-11-12) the status line is live: working or paused and the newest update, from the stats server's public
+    // /status (the same list as the Status page); the panel dump's date until it answers, or if it can't
+    let live = null;
+    const key = (n) => String(n).replace(/\s+/g, '').toLowerCase().replace('everyothergame', 'universal');
+    fetch('https://valor-analytics.okvr500.workers.dev/status').then((r) => r.json()).then((d) => {
+      live = {};
+      (d.games || []).forEach((x) => { live[key(x.game)] = x; });
+      if (cur >= 0) render();
+    }).catch(() => {});
     const render = () => {
       const g = data[cur];
       const total = g.tabs.reduce((a, t) => a + t[1].length, 0);
+      const st = live && live[key(g.name)];
+      const upd = st && st.updated ? new Date(st.updated * 1000).toISOString().slice(0, 10) : g.updated;
       inner.innerHTML =
         '<div class="hub-head"><div><div class="hub-word"><span>VALOR</span> HUB</div><div class="hub-sub">' + esc(g.name) + '</div></div>' +
-        '<div class="hub-status"><b>WORKING</b> &middot; UPDATED ' + when(g.updated) + '<br>' + total + ' SWITCHES</div></div>' +
+        '<div class="hub-status"><b>' + (st && st.state === 'paused' ? 'PAUSED' : 'WORKING') + '</b> &middot; UPDATED ' + when(upd) + '<br>' + total + ' SWITCHES</div></div>' +
         '<div class="hub-tabs" role="tablist">' + g.tabs.map((t, j) => '<button type="button" class="hub-tab' + (j === tab ? ' is-on' : '') + '" data-t="' + j + '">' + esc(t[0]) + '</button>').join('') + '</div>' +
         '<div class="hub-body">' + g.tabs[tab][1].map((r) => '<button type="button" class="hub-row" aria-pressed="' + (r[1] ? 'true' : 'false') + '"><span>' + esc(r[0]) + '</span><i class="hub-sw' + (r[1] ? ' is-on' : '') + '"></i></button>').join('') + '</div>';
     };
