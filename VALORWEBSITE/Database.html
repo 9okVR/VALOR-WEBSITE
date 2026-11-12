@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VALOR Database</title>
+<meta name="description" content="Live data from every VALOR player's battles. No names, no accounts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Database (2026-11-12): the Legal page's layout, colours and type; data from the stats server's public /gd */
+:root{--bg:#07070A;--s1:#0E0E13;--s2:#15151C;--s3:#1C1C25;--line:#22222D;--line2:#2E2E3B;--t1:#F5F5F8;--t2:#C9C9D3;--t3:#9A9AA8;
+  --red:#980924;--red2:#B30E2C;--link:#E8536B;--ease:cubic-bezier(0.16,1,0.3,1);--enter:cubic-bezier(0.22,1,0.36,1)}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+html,body{margin:0;background:var(--bg);color:var(--t1);font-family:'Schibsted Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+a:hover{color:var(--t1);text-decoration:underline;text-underline-offset:4px}
+:focus-visible{outline:2px solid #C8102E;outline-offset:2px;border-radius:4px}
+header{position:sticky;top:0;z-index:50;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  background:rgba(8,8,11,0.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:2px;text-decoration:none}
+.brand:hover{text-decoration:none}
+.brand img{height:15px;width:auto;display:block;align-self:center;position:relative;top:-1.5px}
+.brand span{font-family:'Archivo',sans-serif;font-weight:700;font-size:0.9375rem;letter-spacing:0.16em;color:var(--t1)}
+.back{display:flex;align-items:center;min-height:44px;font-size:0.875rem;font-weight:500;color:var(--t3);transition:color 160ms var(--ease)}
+.back:hover{color:var(--t1);text-decoration:none}
+.grid{max-width:1100px;margin:0 auto;padding:72px 24px 120px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:start}
+.toc{position:sticky;top:104px;display:flex;flex-direction:column;gap:2px}
+.label{margin:0 0 12px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3)}
+.toc a{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:8px;font-size:0.9375rem;color:var(--t2);transition:background 160ms var(--ease),color 160ms var(--ease)}
+.toc a:hover{background:var(--s1);color:var(--t1);text-decoration:none}
+.toc a.on{background:var(--s2);color:var(--t1)}
+.toc .soon{color:var(--t3)}
+main{min-width:0;max-width:760px}
+h1{margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(2rem,5vw,2.75rem);line-height:1.08;letter-spacing:-0.03em}
+h2{margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:1.3125rem;line-height:1.25;letter-spacing:-0.015em}
+p{margin:0 0 14px;max-width:66ch;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
+.lead{font-size:1.0625rem;line-height:1.6;color:var(--t2)}
+section{margin-top:88px}
+.meta{margin:0 0 22px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3)}
+.meta b{font-weight:500;color:var(--t2)}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
+.seg button{height:34px;padding:0 14px;border:0;border-radius:999px;background:none;color:var(--t3);font:500 0.8125rem 'Schibsted Grotesk',system-ui,sans-serif;
+  cursor:pointer;white-space:nowrap;transition:background 160ms var(--ease),color 160ms var(--ease)}
+.seg button:hover{color:var(--t1)}
+.seg button.on{background:var(--s3);color:var(--t1)}
+.search{flex:1 1 180px;min-width:0;height:40px;padding:0 14px;border:0;border-radius:999px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
+  color:var(--t1);font:400 0.875rem 'Schibsted Grotesk',system-ui,sans-serif;transition:box-shadow 160ms var(--ease)}
+.search::placeholder{color:var(--t3)}
+.search:focus{outline:none;box-shadow:inset 0 0 0 1px var(--line2)}
+.box{overflow-x:auto;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08)}
+table{width:100%;min-width:560px;border-collapse:collapse}
+th{padding:12px 14px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--t3);background:var(--s1);border-bottom:1px solid var(--line)}
+th.r,td.r{text-align:right}
+td{padding:12px 14px;font-size:0.9375rem;color:var(--t2);border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+tbody tr{transition:background 160ms var(--ease)}
+tbody tr:hover{background:rgba(255,255,255,0.02)}
+td.bey{color:var(--t1);font-weight:500;white-space:normal;min-width:180px}
+td .n{margin-left:6px;font-size:0.75rem;color:var(--t3)}
+td.top b{color:#FFF1F3}
+td.top{background:rgba(152,9,36,0.12)}
+.dash{color:var(--t3)}
+.best{color:var(--link);font-weight:500}
+.empty{padding:28px 14px;text-align:center;font-size:0.875rem;color:var(--t3)}
+ul{margin:0 0 14px;padding-left:20px;max-width:66ch;display:flex;flex-direction:column;gap:8px;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
+li strong{font-weight:600;color:var(--t1)}
+.rise{opacity:0;transform:translateY(14px);transition:opacity 620ms var(--enter),transform 620ms var(--enter)}
+.rise.in{opacity:1;transform:none}
+@media (max-width:820px){.grid{grid-template-columns:1fr;gap:0;padding-top:48px}.toc{display:none}}
+@media (max-width:600px){table{min-width:0}th:last-child,td:last-child{display:none}th,td{padding:10px 8px}
+  td.bey{min-width:0;font-size:0.875rem}td .n{display:block;margin:2px 0 0}th{font-size:0.625rem;letter-spacing:0.06em}
+  .seg button{padding:0 12px}.search{flex-basis:100%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rise{opacity:1;transform:none;transition:none}*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="VALOR%20v2.dc.html" aria-label="VALOR home"><img src="assets/valor-v.png" alt=""><span>ALOR</span></a>
+  <a class="back" href="VALOR%20v2.dc.html">Back to site</a>
+</header>
+
+<div class="grid">
+  <nav class="toc" aria-label="Database">
+    <p class="label">Database</p>
+    <a href="#global" class="on">Global Data</a>
+    <a href="#fair">How it stays fair</a>
+    <a href="#more" class="soon">More games soon</a>
+  </nav>
+
+  <main>
+    <div class="rise">
+      <p class="label">Database</p>
+      <h1>What every battle teaches</h1>
+      <p class="lead">Live data from every VALOR player's scripts. No names, no accounts. It updates every hour.</p>
+    </div>
+
+    <section id="global" class="rise">
+      <h2>Global Data · Bey Rivals</h2>
+      <p class="meta" id="meta">Loading…</p>
+      <p>Auto battle can play Balanced, Smart or Aggressive. This shows how often each style won against each bey, across every VALOR player. The script starts from this when it picks a style, then learns from your own battles.</p>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Against">
+          <button data-g="b" class="on">Bots</button><button data-g="r">Ranked</button><button data-g="p">Players</button>
+        </div>
+        <div class="seg" role="group" aria-label="View">
+          <button data-v="k" class="on">Beys</button><button data-v="l">Layers</button>
+        </div>
+        <input class="search" id="q" type="search" placeholder="Search a bey" aria-label="Search a bey" autocomplete="off">
+      </div>
+      <div class="box">
+        <table>
+          <thead><tr><th>Bey</th><th class="r">Balanced</th><th class="r">Smart</th><th class="r">Aggressive</th><th>Best style</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="empty" id="empty" hidden></div>
+      </div>
+    </section>
+
+    <section id="fair" class="rise">
+      <h2>How it stays fair</h2>
+      <ul>
+        <li><strong>Enough players first.</strong> A bey only shows here once 3 or more players on 3 or more networks have battled it.</li>
+        <li><strong>No one can flood it.</strong> Each player counts for at most 30 rounds per bey, and the win rate is the middle value across players, so a few fake players can't move it.</li>
+        <li><strong>Bosses stay out.</strong> They copy your power, so their results would mislead.</li>
+        <li><strong>Nothing personal.</strong> Only beys, styles and wins are kept. Nothing here says who played.</li>
+      </ul>
+    </section>
+
+    <section id="more" class="rise">
+      <h2>More games soon</h2>
+      <p>Global Data starts with Bey Rivals. More games will join this page as their scripts learn from every player.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+"use strict";
+(() => {
+  const URL_GD = "https://valor-analytics.okvr500.workers.dev/gd";
+  const STYLES = ["Balanced", "Smart", "Aggressive"];
+  let data = null, g = "b", v = "k", q = "";
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const nice = (s) => String(s || "?").replace(/([a-z])([A-Z])/g, "$1 $2");
+  const ago = (t) => { const m = Math.max(0, Math.round((Date.now() / 1000 - t) / 60)); return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m / 60) + " h ago"; };
+
+  // entrances: each block rises 14px and fades in, 110 ms apart (the site's cascade)
+  const reveal = () => document.querySelectorAll(".rise").forEach((el, i) => setTimeout(() => el.classList.add("in"), 80 + i * 110));
+
+  function render() {
+    if (!data) return;
+    const src = v === "k" ? data.k : data.l, rows = [];
+    for (const key in src) {
+      const parts = key.split("|");
+      if (parts[0] !== g) continue;
+      const name = parts.slice(1).map(nice).join(" / ");
+      if (q && !name.toLowerCase().includes(q)) continue;
+      const e = src[key];
+      let best = -1, bi = -1, w = 0;
+      e.forEach((x, i) => { if (x) { w += x[1]; if (x[1] >= 5 && x[0] > best) { best = x[0]; bi = i; } } });
+      rows.push({ name, e, bi, w });
+    }
+    rows.sort((a, b) => b.w - a.w);
+    $("rows").innerHTML = rows.map((r) => "<tr><td class='bey'>" + esc(r.name) + "</td>" +
+      r.e.map((x, i) => x
+        ? "<td class='r" + (i === r.bi ? " top" : "") + "'><b>" + Math.round(x[0] / 10) + "%</b><span class='n'>" + x[1] + "</span></td>"
+        : "<td class='r dash'>–</td>").join("") +
+      "<td>" + (r.bi >= 0 ? "<span class='best'>" + STYLES[r.bi] + "</span>" : "<span class='dash'>not enough yet</span>") + "</td></tr>").join("");
+    const none = !rows.length;
+    $("empty").hidden = !none;
+    if (none) $("empty").textContent = q ? "No bey matches that search." : "Not enough players have battled these yet.";
+  }
+
+  function meta() {
+    if (!data) return;
+    const nk = Object.keys(data.k).length, nl = Object.keys(data.l).length;
+    $("meta").innerHTML = "Live · updated <b>" + ago(data.at) + "</b> · <b>" + nk + "</b> beys · <b>" + nl + "</b> layers";
+  }
+
+  document.querySelectorAll("[data-g]").forEach((b) => b.addEventListener("click", () => {
+    g = b.dataset.g; document.querySelectorAll("[data-g]").forEach((x) => x.classList.toggle("on", x === b)); render();
+  }));
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
+    v = b.dataset.v; document.querySelectorAll("[data-v]").forEach((x) => x.classList.toggle("on", x === b)); render();
+  }));
+  $("q").addEventListener("input", (ev) => { q = ev.target.value.trim().toLowerCase(); render(); });
+
+  // the side list follows the section you're reading
+  const links = [...document.querySelectorAll(".toc a")];
+  const io = new IntersectionObserver((es) => es.forEach((en) => {
+    if (en.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id));
+  }), { rootMargin: "-40% 0px -55% 0px" });
+  document.querySelectorAll("main section[id]").forEach((s) => io.observe(s));
+
+  async function load() {
+    try {
+      const r = await fetch(URL_GD, { cache: "no-store" });
+      if (!r.ok) throw new Error(r.status);
+      data = await r.json();
+      meta(); render();
+    } catch (e) {
+      $("meta").innerHTML = "Couldn't reach the database. Try again in a minute.";
+      $("empty").hidden = false; $("empty").textContent = "No data right now.";
+    }
+  }
+  reveal(); load();
+  setInterval(meta, 60000);
+  setInterval(load, 600000);
+})();
+</script>
+</body>
+</html>

@@ -185,7 +185,7 @@ table{border-collapse:collapse}
     <a data-hide-sm data-navlink="showcase" href="#showcase" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Showcase</a>
     <a data-hide-sm data-navlink="why" href="#why" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Why VALOR</a>
     <a data-hide-sm data-navlink="guide" href="#guide" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Guide</a>
-    <a data-hide-sm data-navlink="pricing" href="#pricing" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Pricing</a>
+    <a data-hide-sm href="Database.html" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Database</a>
     <a data-hide-sm data-navlink="faq" href="#faq" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">FAQ</a>
     <a data-hide-sm data-navlink="discord" href="#discord" style="display:flex;align-items:center;height:32px;font-size:0.875rem;font-weight:500;color:var(--text-tertiary);text-decoration:none;transition:color 160ms var(--ease)" style-hover="color:var(--text-primary);text-decoration:none">Discord</a>
     <a href="#library" style="display:flex;align-items:center;height:36px;padding:0 14px;background:#8E0A20;border:1px solid rgba(200,16,46,0.45);border-radius:9px;font-size:0.8125rem;font-weight:500;color:#FFF1F3;text-decoration:none;transition:background-color 180ms var(--ease),box-shadow 180ms var(--ease)" style-hover="background:#A30E27;box-shadow:0 0 22px rgba(200,16,46,0.30);text-decoration:none">Get the scripts</a>
@@ -199,7 +199,7 @@ table{border-collapse:collapse}
     <a href="#showcase" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Showcase</a>
     <a href="#why" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Why VALOR</a>
     <a href="#guide" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Guide</a>
-    <a href="#pricing" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Pricing</a>
+    <a href="Database.html" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Database</a>
     <a href="#faq" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">FAQ</a>
     <a href="#discord" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Discord</a>
     <a href="#terms" onClick="{{ onCloseMenu }}" style="display:flex;align-items:center;height:44px;font-size:0.9375rem;font-weight:500;color:var(--text-tertiary);text-decoration:none" style-hover="color:var(--text-primary);text-decoration:none">Terms of Service</a>
@@ -615,7 +615,7 @@ table{border-collapse:collapse}
     </div>
   </section>
 
-  <section id="pricing" data-scene data-navsec="pricing" style="padding:120px 0">
+  <section id="pricing" data-scene data-navsec="pricing" hidden style="padding:120px 0;display:none">
     <div style="max-width:640px;margin-bottom:48px;opacity:clamp(0, calc((var(--p) - 0.00) * 3), 1);transform:translateY(calc(clamp(0, calc(1 - (var(--p) - 0.00) * 3), 1) * 32px))">
       <p style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary);margin:0 0 18px">Pricing</p>
       <h2 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:2.9375rem;line-height:1.06;letter-spacing:-0.035em;color:var(--text-primary);margin:0 0 16px">Free scripts. Premium for the hard ones.</h2>
@@ -779,7 +779,7 @@ table{border-collapse:collapse}
         <div style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.02em;text-transform:uppercase;color:var(--text-tertiary)">Product</div>
         <a href="#why" style="font-size:0.875rem">Why VALOR</a>
         <a href="#library" style="font-size:0.875rem">Script hub</a>
-        <a href="#pricing" style="font-size:0.875rem">Pricing</a>
+        <a href="Database.html" style="font-size:0.875rem">Database</a>
         <a href="Download.dc.html" target="_blank" rel="noopener" style="font-size:0.875rem">Mac executor</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
