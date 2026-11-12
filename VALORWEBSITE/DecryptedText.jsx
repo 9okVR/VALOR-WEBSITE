@@ -20,7 +20,8 @@ function DecryptedText({
   idleMax = 0,
   encryptedStyle,
   revealedStyle,
-  style
+  style,
+  delay = 0
 }) {
   const [displayText, setDisplayText] = useState(text);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -115,8 +116,13 @@ function DecryptedText({
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !hasAnimated) {
-          triggerDecrypt();
-          setHasAnimated(true);
+          // (2026-11-12) delay: the landing waits for the V to rise first; the word stays hidden until it starts
+          if (delay > 0) {
+            setTimeout(() => { triggerDecrypt(); setHasAnimated(true); }, delay);
+          } else {
+            triggerDecrypt();
+            setHasAnimated(true);
+          }
         }
       });
     }, { threshold: 0.1 });
@@ -146,7 +152,8 @@ function DecryptedText({
 
   return React.createElement(
     'span',
-    Object.assign({ ref: containerRef, style: Object.assign({}, wrapperStyle, style || {}) }, hoverProps),
+    Object.assign({ ref: containerRef, style: Object.assign({}, wrapperStyle, style || {},
+      delay > 0 ? { opacity: hasAnimated ? 1 : 0, transition: 'opacity 280ms cubic-bezier(0.22,1,0.36,1)' } : {}) }, hoverProps),
     React.createElement('span', { style: srOnly }, text),
     React.createElement(
       'span',

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VALOR Database</title>
-<meta name="description" content="Live data from every VALOR player's battles. No names, no accounts.">
+<meta name="description" content="Features that learn from every VALOR player's scripts, live. No names, no accounts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -65,6 +65,9 @@ td.top{background:rgba(152,9,36,0.12)}
 .dash{color:var(--t3)}
 .best{color:var(--link);font-weight:500}
 .empty{padding:28px 14px;text-align:center;font-size:0.875rem;color:var(--t3)}
+.steps{margin:0;padding-left:22px;max-width:66ch;display:flex;flex-direction:column;gap:12px;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
+.steps li::marker{font-family:'IBM Plex Mono',monospace;font-size:0.8125rem;color:var(--t3)}
+.steps li strong{font-weight:600;color:var(--t1)}
 ul{margin:0 0 14px;padding-left:20px;max-width:66ch;display:flex;flex-direction:column;gap:8px;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
 li strong{font-weight:600;color:var(--t1)}
 .rise{opacity:0;transform:translateY(14px);transition:opacity 620ms var(--enter),transform 620ms var(--enter)}
@@ -85,22 +88,34 @@ li strong{font-weight:600;color:var(--t1)}
 <div class="grid">
   <nav class="toc" aria-label="Database">
     <p class="label">Database</p>
-    <a href="#global" class="on">Global Data</a>
+    <a href="#how" class="on">How it works</a>
+    <a href="#global">Bey Rivals: Global Data</a>
     <a href="#fair">How it stays fair</a>
-    <a href="#more" class="soon">More games soon</a>
+    <a href="#more" class="soon">More soon</a>
   </nav>
 
   <main>
     <div class="rise">
       <p class="label">Database</p>
-      <h1>What every battle teaches</h1>
-      <p class="lead">Live data from every VALOR player's scripts. No names, no accounts. It updates every hour.</p>
+      <h1>What every player teaches</h1>
+      <p class="lead">Features that learn from every VALOR player's scripts, live. No names, no accounts.</p>
     </div>
 
+    <section id="how" class="rise">
+      <h2>How the database works</h2>
+      <ol class="steps">
+        <li><strong>You play.</strong> A script with a database feature keeps a small summary of what happened, like which bey you battled, how it played and whether it won. It never includes your name or account.</li>
+        <li><strong>The server adds it up.</strong> Every hour, everyone's summaries are added together on our server.</li>
+        <li><strong>Only what holds up is shown.</strong> A result appears once enough different players back it up, so one person can't fake it.</li>
+        <li><strong>Everyone plays better.</strong> The scripts read the results back and start from what already works. This page shows the same data.</li>
+      </ol>
+    </section>
+
     <section id="global" class="rise">
-      <h2>Global Data · Bey Rivals</h2>
+      <p class="label" style="margin-bottom:8px">Bey Rivals</p>
+      <h2>Global Data</h2>
       <p class="meta" id="meta">Loading…</p>
-      <p>Auto battle can play Balanced, Smart or Aggressive. This shows how often each style won against each bey, across every VALOR player. The script starts from this when it picks a style, then learns from your own battles.</p>
+      <p>Auto battle can play Balanced, Smart or Aggressive. This shows how often each style won against each bey, across every VALOR player. The script starts from this when it picks a style, then learns from your own battles. Boss fights are left out: bosses copy your power, so their results would mislead.</p>
       <div class="controls">
         <div class="seg" role="group" aria-label="Against">
           <button data-g="b" class="on">Bots</button><button data-g="r">Ranked</button><button data-g="p">Players</button>
@@ -122,16 +137,15 @@ li strong{font-weight:600;color:var(--t1)}
     <section id="fair" class="rise">
       <h2>How it stays fair</h2>
       <ul>
-        <li><strong>Enough players first.</strong> A bey only shows here once 3 or more players on 3 or more networks have battled it.</li>
-        <li><strong>No one can flood it.</strong> Each player counts for at most 30 rounds per bey, and the win rate is the middle value across players, so a few fake players can't move it.</li>
-        <li><strong>Bosses stay out.</strong> They copy your power, so their results would mislead.</li>
-        <li><strong>Nothing personal.</strong> Only beys, styles and wins are kept. Nothing here says who played.</li>
+        <li><strong>Enough players first.</strong> A result only shows once 3 or more players on 3 or more networks back it up.</li>
+        <li><strong>No one can flood it.</strong> Each player's share is capped, and the result is the middle value across players, so a few fake players can't move it.</li>
+        <li><strong>Nothing personal.</strong> Only game results are kept. Nothing here says who played.</li>
       </ul>
     </section>
 
     <section id="more" class="rise">
-      <h2>More games soon</h2>
-      <p>Global Data starts with Bey Rivals. More games will join this page as their scripts learn from every player.</p>
+      <h2>More soon</h2>
+      <p>Global Data in Bey Rivals is the first database feature. More games and features will join this page.</p>
     </section>
   </main>
 </div>
