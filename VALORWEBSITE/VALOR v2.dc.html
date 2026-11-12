@@ -225,9 +225,9 @@ table{border-collapse:collapse}
     </h1>
   </div>
 
-  <p data-hold style="max-width:54ch;margin:22px 0 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);transition-delay:220ms">Free Roblox scripts from the VALOR team. They run on most executors, on phone and PC.</p>
+  <p data-hold style="max-width:54ch;margin:22px 0 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);transition-delay:150ms">Free Roblox scripts from the VALOR team. They run on most executors, on phone and PC.</p>
 
-  <div data-hold data-hero-cta style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-top:32px;transition-delay:420ms">
+  <div data-hold data-hero-cta style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-top:32px;transition-delay:300ms">
     <a href="#library" data-specular data-radius="12" data-shine="120" data-fade="62" data-thickness="1" data-proximity="260" style="position:relative;display:flex;align-items:center;gap:8px;height:48px;padding:0 24px;background:#8E0A20;border:1px solid rgba(200,16,46,0.45);color:#FFF1F3;font-size:0.9375rem;font-weight:500;border-radius:12px;text-decoration:none;transition:background-color 180ms var(--ease),border-color 180ms var(--ease),box-shadow 180ms var(--ease)" style-hover="background:#A30E27;border-color:rgba(200,16,46,0.8);box-shadow:0 0 28px rgba(200,16,46,0.30);text-decoration:none" style-active="background:var(--accent-active);transform:translateY(1px)">
       Get the scripts
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
@@ -244,7 +244,7 @@ table{border-collapse:collapse}
 
   </div>
 
-  <div data-hold data-scroll-hint aria-hidden="true" style="position:absolute;left:50%;bottom:28px;margin-left:-40px;width:80px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:1;pointer-events:none;transition-delay:900ms">
+  <div data-hold data-scroll-hint aria-hidden="true" style="position:absolute;left:50%;bottom:28px;margin-left:-40px;width:80px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:1;pointer-events:none;transition-delay:700ms">
     <span style="font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-tertiary)">Scroll</span>
     <span style="width:1px;height:28px;background:linear-gradient(to bottom,var(--text-tertiary),transparent)"></span>
   </div>
@@ -1438,11 +1438,11 @@ class Component extends DCLogic {
       }
     };
     // (2026-11-12, the owner: "if the user doesn't scroll, they're probably not going to know to scroll") the V rises,
-    // VALOR decodes, then the bar, tagline and buttons come in by themselves (their own 0 / 220 / 420 ms steps), then the
+    // VALOR decodes, then the bar, tagline and buttons come in by themselves (their own 0 / 150 / 300 ms steps), then the
     // scroll hint; a scroll before that still brings them in at once. The hint fades away once the page has moved.
     this.holdTimer = setTimeout(() => {
       document.querySelectorAll('[data-hold]:not([data-in])').forEach((n) => n.setAttribute('data-in', ''));
-    }, 2300);
+    }, 1600);
     this.onHint = () => {
       const h = document.querySelector('[data-scroll-hint]');
       if (h && h.hasAttribute('data-in')) { h.style.transitionDelay = '0ms'; h.style.opacity = window.scrollY > 40 ? '0' : ''; }
