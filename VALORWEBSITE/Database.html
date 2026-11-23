@@ -7,267 +7,403 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png?v=2">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=2">
 <title>VALOR Database</title>
-<meta name="description" content="Features that learn from every VALOR player's scripts, live. No names, no accounts.">
+<meta name="description" content="Live game data learned from every VALOR player's scripts. No names, no accounts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Schibsted+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* Database (2026-11-12): the Legal page's layout, colours and type; data from the stats server's public /gd */
-:root{--bg:#07070A;--s1:#0E0E13;--s2:#15151C;--s3:#1C1C25;--line:#22222D;--line2:#2E2E3B;--t1:#F5F5F8;--t2:#C9C9D3;--t3:#9A9AA8;
-  --red:#980924;--red2:#B30E2C;--link:#E8536B;--ease:cubic-bezier(0.16,1,0.3,1);--enter:cubic-bezier(0.22,1,0.36,1)}
-html{scroll-behavior:smooth;scroll-padding-top:88px}
+:root{--bg:#07070A;--s1:#0D0D12;--s2:#13131A;--s3:#1A1A23;--line:#1F1F29;--line2:#2B2B37;--t1:#F5F5F8;--t2:#C9C9D3;--t3:#8E8E9C;
+  --red:#980924;--red2:#B30E2C;--link:#E8536B;--bal:#93A4FF;--smt:#46D3C2;--agg:#F2647B;
+  --ease:cubic-bezier(0.16,1,0.3,1);--enter:cubic-bezier(0.22,1,0.36,1);--r:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 html,body{margin:0;background:var(--bg);color:var(--t1);font-family:'Schibsted Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:var(--link);text-decoration:none}
-a:hover{color:var(--t1);text-decoration:underline;text-underline-offset:4px}
-:focus-visible{outline:2px solid #C8102E;outline-offset:2px;border-radius:4px}
+:focus-visible{outline:2px solid #C8102E;outline-offset:2px;border-radius:6px}
+svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 header{position:sticky;top:0;z-index:50;height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  background:rgba(8,8,11,0.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:baseline;gap:2px;text-decoration:none}
-.brand:hover{text-decoration:none}
+  background:rgba(8,8,11,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:2px}
 .brand img{height:15px;width:auto;display:block;align-self:center;position:relative;top:-1.5px}
 .brand span{font-family:'Archivo',sans-serif;font-weight:700;font-size:0.9375rem;letter-spacing:0.16em;color:var(--t1)}
-.back{display:flex;align-items:center;min-height:44px;font-size:0.875rem;font-weight:500;color:var(--t3);transition:color 160ms var(--ease)}
-.back:hover{color:var(--t1);text-decoration:none}
-.grid{max-width:1100px;margin:0 auto;padding:72px 24px 120px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:start}
-.toc{position:sticky;top:104px;display:flex;flex-direction:column;gap:2px}
-.label{margin:0 0 12px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3)}
-.toc a{display:flex;align-items:center;min-height:40px;padding:0 12px;border-radius:8px;font-size:0.9375rem;color:var(--t2);transition:background 160ms var(--ease),color 160ms var(--ease)}
-.toc a:hover{background:var(--s1);color:var(--t1);text-decoration:none}
-.toc a.on{background:var(--s2);color:var(--t1)}
-.toc .soon{color:var(--t3)}
-main{min-width:0;max-width:760px}
-h1{margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(2rem,5vw,2.75rem);line-height:1.08;letter-spacing:-0.03em}
-h2{margin:0 0 10px;font-family:'Archivo',sans-serif;font-weight:600;font-size:1.3125rem;line-height:1.25;letter-spacing:-0.015em}
-p{margin:0 0 14px;max-width:66ch;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
-.lead{font-size:1.0625rem;line-height:1.6;color:var(--t2)}
-section{margin-top:88px}
-.meta{margin:0 0 22px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--t3)}
-.meta b{font-weight:500;color:var(--t2)}
-.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px}
-.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
-.seg button{height:34px;padding:0 14px;border:0;border-radius:999px;background:none;color:var(--t3);font:500 0.8125rem 'Schibsted Grotesk',system-ui,sans-serif;
-  cursor:pointer;white-space:nowrap;transition:background 160ms var(--ease),color 160ms var(--ease)}
+.back{display:flex;align-items:center;gap:8px;min-height:44px;font-size:0.875rem;font-weight:500;color:var(--t3);transition:color 160ms var(--ease)}
+.back:hover{color:var(--t1)}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 24px 120px}
+.mono{font-family:'IBM Plex Mono',monospace}
+.kicker{display:inline-flex;align-items:center;gap:8px;margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--t3)}
+.live{justify-self:start;display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px;border-radius:999px;background:rgba(70,211,194,0.08);
+  box-shadow:inset 0 0 0 1px rgba(70,211,194,0.25);color:#9BEFE4;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.1em;text-transform:uppercase}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--smt)}
+.live.off{background:rgba(255,255,255,0.04);box-shadow:inset 0 0 0 1px var(--line2);color:var(--t3)}
+.live.off i{background:var(--t3);box-shadow:none}
+h1{margin:0 0 14px;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(2.25rem,6vw,3.5rem);line-height:1.02;letter-spacing:-0.035em}
+h1 em{font-style:normal;background:linear-gradient(90deg,#FF8A9B,#E8536B 45%,#B30E2C);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-size:1.375rem;line-height:1.2;letter-spacing:-0.02em}
+.lead{margin:0;max-width:60ch;font-size:1.0625rem;line-height:1.6;color:var(--t2)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end}
+.stats{margin:36px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat{display:flex;gap:14px;align-items:center;padding:18px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
+.ico{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:11px;background:var(--s3);box-shadow:inset 0 0 0 1px var(--line2);color:var(--t2)}
+.ico.red{background:rgba(152,9,36,0.16);box-shadow:inset 0 0 0 1px rgba(232,83,107,0.28);color:#FF9AAA}
+.stat b{display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:1.375rem;letter-spacing:-0.02em;color:var(--t1);font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:2px;font-size:0.8125rem;color:var(--t3)}
+section{margin-top:72px}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 18px}
+.head p{margin:6px 0 0;font-size:0.9375rem;line-height:1.6;color:var(--t3);max-width:62ch}
+.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.game{position:relative;display:flex;flex-direction:column;gap:14px;padding:20px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
+  color:var(--t2);text-align:left;border:0;font:inherit;cursor:pointer;transition:background 180ms var(--ease),box-shadow 180ms var(--ease)}
+.game:hover{background:var(--s2)}
+.game.on{background:var(--s1);box-shadow:inset 0 0 0 1px rgba(232,83,107,0.55)}
+.game.soon{cursor:default;opacity:0.62}
+.game.soon:hover{background:var(--s1)}
+.game .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.game b{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.0625rem;color:var(--t1)}
+.game small{font-size:0.875rem;line-height:1.5;color:var(--t3)}
+.tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;
+  letter-spacing:0.08em;text-transform:uppercase;background:var(--s3);color:var(--t3);box-shadow:inset 0 0 0 1px var(--line2)}
+.tag.ok{background:rgba(70,211,194,0.1);color:#9BEFE4;box-shadow:inset 0 0 0 1px rgba(70,211,194,0.28)}
+.styles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 14px}
+.style{display:flex;gap:14px;padding:18px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
+.style .ico{color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 30%,transparent)}
+.style b{display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:1rem;color:var(--t1)}
+.style span{display:block;margin-top:4px;font-size:0.875rem;line-height:1.5;color:var(--t3)}
+.c-bal{--c:var(--bal)}.c-smt{--c:var(--smt)}.c-agg{--c:var(--agg)}
+.tools{position:sticky;top:64px;z-index:20;margin:0 -24px 14px;padding:12px 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  background:rgba(7,7,10,0.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.seg{display:inline-flex;padding:4px;border-radius:12px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
+.seg button{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 13px;border:0;border-radius:9px;background:none;color:var(--t3);
+  font:500 0.875rem 'Schibsted Grotesk',system-ui,sans-serif;cursor:pointer;white-space:nowrap;transition:background 160ms var(--ease),color 160ms var(--ease)}
+.seg button svg.i{width:16px;height:16px}
 .seg button:hover{color:var(--t1)}
-.seg button.on{background:var(--s3);color:var(--t1)}
-.search{flex:1 1 180px;min-width:0;height:40px;padding:0 14px;border:0;border-radius:999px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
-  color:var(--t1);font:400 0.875rem 'Schibsted Grotesk',system-ui,sans-serif;transition:box-shadow 160ms var(--ease)}
-.search::placeholder{color:var(--t3)}
-.search:focus{outline:none;box-shadow:inset 0 0 0 1px var(--line2)}
-.box{overflow-x:auto;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08)}
-table{width:100%;min-width:560px;border-collapse:collapse}
-th{padding:12px 14px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
-  color:var(--t3);background:var(--s1);border-bottom:1px solid var(--line)}
-th.r,td.r{text-align:right}
-td{padding:12px 14px;font-size:0.9375rem;color:var(--t2);border-bottom:1px solid var(--line);white-space:nowrap}
-tr:last-child td{border-bottom:0}
-tbody tr{transition:background 160ms var(--ease)}
-tbody tr:hover{background:rgba(255,255,255,0.02)}
-td.bey{color:var(--t1);font-weight:500;white-space:normal;min-width:180px}
-td .n{margin-left:6px;font-size:0.75rem;color:var(--t3)}
-td.top b{color:#FFF1F3}
-td.top{background:rgba(152,9,36,0.12)}
-.dash{color:var(--t3)}
-.best{color:var(--link);font-weight:500}
-.styles{margin:0 0 18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.styles div{padding:14px 16px;border-radius:12px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
-.styles dt{margin:0 0 4px;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.9375rem;color:var(--t1)}
-.styles dd{margin:0;font-size:0.8125rem;line-height:1.55;color:var(--t3)}
-.read{font-size:0.875rem;color:var(--t3)}
-.read strong{font-weight:600;color:var(--t2)}
-.games{display:flex;flex-direction:column;gap:8px}
-.game{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-radius:12px;background:var(--s1);
-  box-shadow:inset 0 0 0 1px var(--line);color:var(--t2);transition:background 160ms var(--ease)}
-.game:hover{background:var(--s2);color:var(--t2);text-decoration:none}
-.game b{font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--t1)}
-.game .sub{display:block;margin-top:3px;font-size:0.8125rem;line-height:1.5;color:var(--t3)}
-.ok{flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--t1)}
-td .sub{display:block;margin-top:2px;font-size:0.8125rem;font-weight:400;color:var(--t3)}
-.rate{display:inline-flex;flex-direction:column;align-items:flex-end;gap:5px}
-.bar{display:block;width:56px;height:3px;border-radius:2px;background:var(--line)}
-.bar i{display:block;height:100%;border-radius:2px;background:var(--t3)}
-td.top .bar i{background:#E8536B}
-.empty{padding:28px 14px;text-align:center;font-size:0.875rem;color:var(--t3)}
-.steps{margin:0;padding-left:22px;max-width:66ch;display:flex;flex-direction:column;gap:12px;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
-.steps li::marker{font-family:'IBM Plex Mono',monospace;font-size:0.8125rem;color:var(--t3)}
-.steps li strong{font-weight:600;color:var(--t1)}
-ul{margin:0 0 14px;padding-left:20px;max-width:66ch;display:flex;flex-direction:column;gap:8px;font-size:0.9375rem;line-height:1.7;color:var(--t2)}
-li strong{font-weight:600;color:var(--t1)}
+.seg button[aria-pressed="true"]{background:var(--s3);color:var(--t1);box-shadow:inset 0 0 0 1px var(--line2)}
+.find{flex:1 1 200px;min-width:0;position:relative;display:flex;align-items:center}
+.find svg{position:absolute;left:14px;color:var(--t3);pointer-events:none}
+.find input{width:100%;height:44px;padding:0 14px 0 42px;border:0;border-radius:12px;background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
+  color:var(--t1);font:400 0.9375rem 'Schibsted Grotesk',system-ui,sans-serif;transition:box-shadow 160ms var(--ease)}
+.find input::placeholder{color:var(--t3)}
+.find input:focus{outline:none;box-shadow:inset 0 0 0 1px rgba(232,83,107,0.5)}
+.insights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.card{display:flex;flex-direction:column;gap:12px;padding:18px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
+  text-align:left;border:0;font:inherit;color:inherit;cursor:pointer;transition:background 180ms var(--ease)}
+.card:hover{background:var(--s2)}
+.card .row1{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3)}
+.card .row1 svg.i{width:16px;height:16px}
+.card b{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.25rem;line-height:1.2;letter-spacing:-0.015em;color:var(--t1)}
+.card span{font-size:0.875rem;line-height:1.5;color:var(--t3)}
+.card span em{font-style:normal;color:var(--t2);font-weight:500}
+.list{display:flex;flex-direction:column;gap:8px}
+.m{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,2fr) 132px;gap:20px;align-items:center;padding:16px 18px;border-radius:var(--r);
+  background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);transition:background 160ms var(--ease)}
+.m:hover{background:var(--s2)}
+.who{display:flex;align-items:center;gap:14px;min-width:0}
+.av{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:0.875rem;
+  letter-spacing:0.02em;color:#fff;background:var(--h1)}
+.av i{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--s2);font-style:normal;color:var(--t1)}
+.who b{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:1rem;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{display:block;margin-top:3px;font-size:0.8125rem;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bars{display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:96px minmax(0,1fr) 46px;gap:10px;align-items:center;font-size:0.8125rem;color:var(--t3)}
+.bar .nm{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.bar .nm svg.i{width:14px;height:14px}
+.bar .tr{height:8px;border-radius:999px;background:var(--s3);overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:999px;background:#3A3A48;transform-origin:left;animation:grow 700ms var(--enter) both}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--t2);font-weight:500}
+.bar.win{color:var(--t1)}
+.bar.win .nm{color:var(--c)}
+.bar.win .tr i{background:var(--c)}
+.bar.win .v{color:var(--t1)}
+.bar.few .v{color:var(--t3);font-weight:400}
+.bar.none .v{color:var(--t3)}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.pick{display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right}
+.chip{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px;border-radius:999px;font-size:0.8125rem;font-weight:600;color:var(--c);
+  background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 32%,transparent)}
+.chip svg.i{width:15px;height:15px}
+.chip.wait{--c:var(--t3)}
+.pick small{font-size:0.75rem;color:var(--t3)}
+.more{display:flex;justify-content:center;margin-top:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 20px;border:0;border-radius:12px;background:var(--s2);color:var(--t1);
+  box-shadow:inset 0 0 0 1px var(--line2);font:500 0.9375rem 'Schibsted Grotesk',system-ui,sans-serif;cursor:pointer;transition:background 160ms var(--ease)}
+.btn:hover{background:var(--s3)}
+.empty{padding:36px 18px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);text-align:center;font-size:0.9375rem;color:var(--t3)}
+.skel{height:92px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);animation:sh 1.4s ease-in-out infinite alternate}
+@keyframes sh{to{opacity:0.5}}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:s}
+.step{position:relative;padding:20px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
+.step .ico{margin-bottom:14px}
+.step b{display:block;font-family:'Archivo',sans-serif;font-weight:700;font-size:1rem;color:var(--t1)}
+.step span{display:block;margin-top:6px;font-size:0.875rem;line-height:1.55;color:var(--t3)}
+.step:before{counter-increment:s;content:"0" counter(s);position:absolute;top:22px;right:20px;font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#4A4A58}
+.fair{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}
+.fair>div{display:flex;gap:14px;align-items:flex-start;padding:18px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line)}
+.fair>div>span{min-width:0}
+.fair b{display:block;font-size:0.9375rem;font-weight:600;color:var(--t1)}
+.fair span{display:block;margin-top:4px;font-size:0.875rem;line-height:1.55;color:var(--t3)}
+.note{margin:14px 0 0;font-size:0.8125rem;line-height:1.6;color:var(--t3)}
 .rise{opacity:0;transform:translateY(14px);transition:opacity 620ms var(--enter),transform 620ms var(--enter)}
 .rise.in{opacity:1;transform:none}
-@media (max-width:820px){.grid{grid-template-columns:1fr;gap:0;padding-top:48px}.toc{display:none}}
-@media (max-width:820px){.styles{grid-template-columns:1fr}}
-@media (max-width:600px){table{min-width:0}th:last-child,td:last-child{display:none}th,td{padding:10px 8px}
-  td.bey{min-width:0;font-size:0.875rem}td .n{display:block;margin:2px 0 0}th{font-size:0.625rem;letter-spacing:0.06em}
-  .seg button{padding:0 12px}.search{flex-basis:100%}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rise{opacity:1;transform:none;transition:none}*{transition:none!important}}
+@media (max-width:900px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m{grid-template-columns:minmax(0,1fr) 120px}.bars{grid-column:1 / -1;grid-row:2}}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.games,.styles,.insights,.fair{grid-template-columns:1fr}
+  .wrap{padding:40px 16px 96px}.tools{margin:0 -16px 12px;padding:10px 16px}.seg{flex:1 1 auto}.seg button{flex:1;justify-content:center;padding:0 8px}
+  .find{flex-basis:100%}.m{padding:14px;gap:14px}.bar{grid-template-columns:88px minmax(0,1fr) 42px}}
+@media (max-width:720px){.games{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}.games::-webkit-scrollbar{display:none}
+  .game{flex:0 0 78%;scroll-snap-align:start}
+  .tools{position:static;background:none;backdrop-filter:none;-webkit-backdrop-filter:none}.seg{flex:1 1 100%}
+  .style{padding:14px;gap:12px}.style .ico{width:36px;height:36px}.style span{font-size:0.8125rem}.hero .live{justify-self:start}}
+@media (max-width:420px){.stats{grid-template-columns:1fr 1fr;gap:8px}.stat{padding:14px;gap:10px}.stat .ico{width:34px;height:34px}.stat b{font-size:1.125rem}
+  .seg button{font-size:0.8125rem;gap:6px;padding:0 6px}.steps{grid-template-columns:1fr}.bar{grid-template-columns:84px minmax(0,1fr) 40px;gap:8px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rise{opacity:1;transform:none;transition:none}.bar .tr i,.skel{animation:none}*{transition:none!important}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 4 12L16 9l1.5 3H21"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="0.8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><path d="M15.5 5.6a3.2 3.2 0 0 1 0 5.8M17 14.3c2 .6 3.2 2.2 3.5 4.7"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="4.5" y="8" width="15" height="11" rx="3"/><path d="M12 4.5V8M9.5 13v1.5M14.5 13v1.5M2.5 13v2.5M21.5 13v2.5"/><circle cx="12" cy="4" r="0.9"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4.5h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.9M16 6h2.5a2.5 2.5 0 0 1-2.7 3.9M12 13.5v3M8.5 19.5h7l-1-3h-5z"/></symbol>
+  <symbol id="i-bey" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5c2.5 2 3.4 4.8 3 8.5M20.5 12c-2 2.5-4.8 3.4-8.5 3M12 20.5c-2.5-2-3.4-4.8-3-8.5M3.5 12c2-2.5 4.8-3.4 8.5-3"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 4 3.5 8.5 12 13l8.5-4.5z"/><path d="M3.5 12.5 12 17l8.5-4.5M3.5 16.5 12 21l8.5-4.5"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 20.5c-3.6 0-6-2.4-6-5.6 0-3.6 3.3-5.3 4-9.4 2.6 1.6 3.5 3.8 3.4 5.6 1.1-.6 1.8-1.7 2-2.8 1.8 1.6 2.6 3.8 2.6 6.4 0 3.4-2.5 5.8-6 5.8z"/></symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24"><path d="m4 8 4 4 4-6 4 6 4-4-1.5 10h-13z"/><path d="M6 20.5h12"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M5 7h14M5 7l-2.5 6a2.5 2.5 0 0 0 5 0zM19 7l-2.5 6a2.5 2.5 0 0 0 5 0z"/><circle cx="12" cy="4" r="0.9"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-sword" viewBox="0 0 24 24"><path d="M14.5 4.5H20v5.5L10 20l-2-2-2 2-2-2 2-2-2-2z"/><path d="m13 11 2-2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.5 19.5 6v5.5c0 4.5-3.2 7.8-7.5 9-4.3-1.2-7.5-4.5-7.5-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="11" rx="4"/><path d="M7 10.5v4M5 12.5h4M15.5 11.5h.01M17.5 13.5h.01"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="2.8"/><path d="M4.5 6v12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V6M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.4 2.4 4.6-4.8"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M4 17l5-5 3.5 3.5L20 8"/><path d="M14.5 8H20v5.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M4 19.5h16M7 16V9M12 16V5M17 16v-4"/></symbol>
+  <symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m12 8 3.5 2.6-1.3 4.1H9.8l-1.3-4.1z"/><path d="M12 3.5V8M15.5 10.6l4.3-1.6M14.2 14.7l2.6 3.8M9.8 14.7l-2.6 3.8M8.5 10.6 4.2 9"/></symbol>
+  <symbol id="i-fish" viewBox="0 0 24 24"><path d="M3 12c3-4.5 8-6 12.5-3.5L21 5v14l-5.5-3.5C11 18 6 16.5 3 12z"/><circle cx="8" cy="11" r="0.9"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+</svg>
+
 <header>
   <a class="brand" href="VALOR%20v2.dc.html" aria-label="VALOR home"><img src="assets/valor-v.png" alt=""><span>ALOR</span></a>
-  <a class="back" href="VALOR%20v2.dc.html">Back to site</a>
+  <a class="back" href="VALOR%20v2.dc.html"><svg class="i"><use href="#i-back"/></svg>Back to site</a>
 </header>
 
-<div class="grid">
-  <nav class="toc" aria-label="Database">
-    <p class="label">Database</p>
-    <a href="#how" class="on">How it works</a>
-    <a href="#games">Games</a>
-    <a href="#global">Bey Rivals: Global Data</a>
-    <a href="#fair">How it stays fair</a>
-    <a href="#more" class="soon">More soon</a>
-  </nav>
+<div class="wrap">
+  <div class="hero rise">
+    <div>
+      <p class="kicker"><svg class="i"><use href="#i-db"/></svg>VALOR Database</p>
+      <h1>What every player <em>teaches</em></h1>
+      <p class="lead">Live results learned from every VALOR player's scripts, added up every hour. No names, no accounts.</p>
+    </div>
+    <span class="live off" id="live"><i></i><span id="liveTxt">Connecting</span></span>
+  </div>
 
-  <main>
-    <div class="rise">
-      <p class="label">Database</p>
-      <h1>What every player teaches</h1>
-      <p class="lead">Features that learn from every VALOR player's scripts, live. No names, no accounts.</p>
+  <div class="stats rise" aria-live="polite">
+    <div class="stat"><div class="ico red"><svg class="i"><use href="#i-pulse"/></svg></div><div><b id="sRounds">–</b><span>rounds counted</span></div></div>
+    <div class="stat"><div class="ico"><svg class="i"><use href="#i-target"/></svg></div><div><b id="sOpp">–</b><span>opponents tracked</span></div></div>
+    <div class="stat"><div class="ico"><svg class="i"><use href="#i-layers"/></svg></div><div><b id="sLayers">–</b><span>layers compared</span></div></div>
+    <div class="stat"><div class="ico"><svg class="i"><use href="#i-clock"/></svg></div><div><b id="sAt">–</b><span>last update</span></div></div>
+  </div>
+
+  <section class="rise" aria-labelledby="gTitle">
+    <div class="head"><div><h2 id="gTitle">Games</h2><p>Pick a game to see what its players have taught the scripts.</p></div></div>
+    <div class="games">
+      <button class="game on" type="button" aria-pressed="true">
+        <span class="top"><span class="ico red"><svg class="i"><use href="#i-bey"/></svg></span><span class="tag ok">Live</span></span>
+        <span><b>Bey Rivals</b><br><small>Global Data: the playstyle that wins most against each bey.</small></span>
+      </button>
+      <div class="game soon">
+        <span class="top"><span class="ico"><svg class="i"><use href="#i-ball"/></svg></span><span class="tag">Soon</span></span>
+        <span><b>Turbo Soccer</b><br><small>Match data from auto play.</small></span>
+      </div>
+      <div class="game soon">
+        <span class="top"><span class="ico"><svg class="i"><use href="#i-fish"/></svg></span><span class="tag">Soon</span></span>
+        <span><b>More games</b><br><small>New database features land here first.</small></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="global" class="rise" aria-labelledby="bTitle">
+    <div class="head"><div><h2 id="bTitle">Bey Rivals: Global Data</h2>
+      <p>How often each Auto battle style won against each bey, across every VALOR player. The script starts from this, then learns from your own battles.</p></div></div>
+    <div class="styles">
+      <div class="style c-bal"><div class="ico"><svg class="i"><use href="#i-scale"/></svg></div><div><b>Balanced</b><span>Steady attacks and defense. The default.</span></div></div>
+      <div class="style c-smt"><div class="ico"><svg class="i"><use href="#i-eye"/></svg></div><div><b>Smart</b><span>Watches both beys' spin: goes for bursts when it can, plays safe when it can't.</span></div></div>
+      <div class="style c-agg"><div class="ico"><svg class="i"><use href="#i-sword"/></svg></div><div><b>Aggressive</b><span>Always attacks.</span></div></div>
     </div>
 
-    <section id="how" class="rise">
-      <h2>How the database works</h2>
-      <ol class="steps">
-        <li><strong>You play.</strong> A script with a database feature keeps a small summary of what happened, like which bey you battled, how it played and whether it won. It never includes your name or account.</li>
-        <li><strong>The server adds it up.</strong> Every hour, everyone's summaries are added together on our server.</li>
-        <li><strong>Only what holds up is shown.</strong> A result appears once enough different players back it up, so one person can't fake it.</li>
-        <li><strong>Everyone plays better.</strong> The scripts read the results back and start from what already works. This page shows the same data.</li>
-      </ol>
-    </section>
-
-    <section id="games" class="rise">
-      <h2>Games with database features</h2>
-      <div class="games">
-        <a class="game" href="#global">
-          <span><b>Bey Rivals</b><span class="sub">Global Data: picks the playstyle that wins most against each bey</span></span>
-          <span class="ok">Live</span>
-        </a>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Against">
+        <button type="button" data-g="b" aria-pressed="true"><svg class="i"><use href="#i-bot"/></svg><span class="lbl">Bots</span></button>
+        <button type="button" data-g="r" aria-pressed="false"><svg class="i"><use href="#i-trophy"/></svg><span class="lbl">Ranked</span></button>
+        <button type="button" data-g="p" aria-pressed="false"><svg class="i"><use href="#i-users"/></svg><span class="lbl">Players</span></button>
       </div>
-    </section>
-
-    <section id="global" class="rise">
-      <p class="label" style="margin-bottom:8px">Bey Rivals</p>
-      <h2>Global Data</h2>
-      <p class="meta" id="meta">Loading…</p>
-      <p>Auto battle can play three styles. Global Data shows how often each one won against each bey, across every VALOR player. The script starts from this when it picks a style, then learns from your own battles.</p>
-      <dl class="styles">
-        <div><dt>Balanced</dt><dd>Steady attacks and defense. The default.</dd></div>
-        <div><dt>Smart</dt><dd>Watches both beys' spin. Goes for bursts and ring-outs if yours would run out first, plays safe if theirs would.</dd></div>
-        <div><dt>Aggressive</dt><dd>Always attacks.</dd></div>
-      </dl>
-      <p class="read"><strong>Reading the table.</strong> Each row is a bey Auto battle fought: its layer, then its disc and driver. The percentage is how often it won with that style, the small number is how many rounds that's based on, and the best style is highlighted. Boss fights are left out: bosses copy your power, so their results would mislead.</p>
-      <div class="controls">
-        <div class="seg" role="group" aria-label="Against">
-          <button data-g="b" class="on">Bots</button><button data-g="r">Ranked</button><button data-g="p">Players</button>
-        </div>
-        <div class="seg" role="group" aria-label="View">
-          <button data-v="k" class="on">Beys</button><button data-v="l">Layers</button>
-        </div>
-        <div class="seg" role="group" aria-label="Sort">
-          <button data-s="n" class="on">Most played</button><button data-s="w">Best win rate</button>
-        </div>
-        <input class="search" id="q" type="search" placeholder="Search a bey" aria-label="Search a bey" autocomplete="off">
+      <div class="seg" role="group" aria-label="Show">
+        <button type="button" data-v="k" aria-pressed="true"><svg class="i"><use href="#i-bey"/></svg><span class="lbl">Beys</span></button>
+        <button type="button" data-v="l" aria-pressed="false"><svg class="i"><use href="#i-layers"/></svg><span class="lbl">Layers</span></button>
       </div>
-      <div class="box">
-        <table>
-          <thead><tr><th>Opponent bey</th><th class="r">Balanced</th><th class="r">Smart</th><th class="r">Aggressive</th><th>Best style</th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
-        <div class="empty" id="empty" hidden></div>
+      <div class="seg" role="group" aria-label="Sort">
+        <button type="button" data-s="n" aria-pressed="true"><svg class="i"><use href="#i-flame"/></svg><span class="lbl">Most played</span></button>
+        <button type="button" data-s="w" aria-pressed="false"><svg class="i"><use href="#i-crown"/></svg><span class="lbl">Best win rate</span></button>
       </div>
-    </section>
+      <label class="find"><svg class="i"><use href="#i-search"/></svg><input id="q" type="search" placeholder="Search a bey, disc or driver" aria-label="Search a bey" autocomplete="off"></label>
+    </div>
 
-    <section id="fair" class="rise">
-      <h2>How it stays fair</h2>
-      <ul>
-        <li><strong>Enough players first.</strong> A result only shows once 3 or more players on 3 or more networks back it up.</li>
-        <li><strong>No one can flood it.</strong> Each player's share is capped, and the result is the middle value across players, so a few fake players can't move it.</li>
-        <li><strong>Nothing personal.</strong> Only game results are kept. Nothing here says who played.</li>
-      </ul>
-    </section>
+    <div class="insights" id="ins"></div>
+    <div class="list" id="list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+    <div class="more" id="moreWrap" hidden><button class="btn" id="more" type="button"><svg class="i"><use href="#i-down"/></svg><span id="moreTxt">Show more</span></button></div>
+    <p class="note">The best style needs at least 5 rounds. Boss fights are left out: bosses copy your power, so their results would mislead.</p>
+  </section>
 
-    <section id="more" class="rise">
-      <h2>More soon</h2>
-      <p>Global Data in Bey Rivals is the first database feature. More games and features will join this page.</p>
-    </section>
-  </main>
+  <section class="rise" aria-labelledby="hTitle">
+    <div class="head"><div><h2 id="hTitle">How it works</h2></div></div>
+    <div class="steps">
+      <div class="step"><div class="ico"><svg class="i"><use href="#i-play"/></svg></div><b>You play</b><span>A script with a database feature keeps a small summary: which bey you fought, how it played, whether it won. Never your name.</span></div>
+      <div class="step"><div class="ico"><svg class="i"><use href="#i-db"/></svg></div><b>It adds up</b><span>Every hour, everyone's summaries are added together on our server.</span></div>
+      <div class="step"><div class="ico"><svg class="i"><use href="#i-check"/></svg></div><b>Only what holds up</b><span>A result shows once enough different players back it up, so one person can't fake it.</span></div>
+      <div class="step"><div class="ico red"><svg class="i"><use href="#i-up"/></svg></div><b>Everyone plays better</b><span>Scripts read the results back and start from what already works.</span></div>
+    </div>
+    <div class="fair">
+      <div><div class="ico"><svg class="i"><use href="#i-users"/></svg></div><span><b>Enough players first</b><span>3 or more players on 3 or more networks before anything shows.</span></span></div>
+      <div><div class="ico"><svg class="i"><use href="#i-cap"/></svg></div><span><b>No one can flood it</b><span>Each player's share is capped and the middle value is used.</span></span></div>
+      <div><div class="ico"><svg class="i"><use href="#i-lock"/></svg></div><span><b>Nothing personal</b><span>Only game results are kept. Nothing here says who played.</span></span></div>
+    </div>
+  </section>
 </div>
 
 <script>
 "use strict";
 (() => {
   const URL_GD = "https://valor-analytics.okvr500.workers.dev/gd";
-  const STYLES = ["Balanced", "Smart", "Aggressive"];
-  let data = null, g = "b", v = "k", q = "", sortBy = "n";
+  const ST = [{n: "Balanced", c: "c-bal", i: "i-scale"}, {n: "Smart", c: "c-smt", i: "i-eye"}, {n: "Aggressive", c: "c-agg", i: "i-sword"}];
+  const MODE = {b: "bots", r: "ranked players", p: "players"};
+  const PAGE = 20;
+  let data = null, g = "b", v = "k", q = "", sortBy = "n", shown = PAGE, focusKey = null;
   const $ = (id) => document.getElementById(id);
-  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
   const nice = (s) => String(s || "?").replace(/([a-z])([A-Z])/g, "$1 $2");
   const ago = (t) => { const m = Math.max(0, Math.round((Date.now() / 1000 - t) / 60)); return m < 1 ? "just now" : m < 60 ? m + " min ago" : Math.round(m / 60) + " h ago"; };
+  const fmt = (n) => n >= 10000 ? (n / 1000).toFixed(n >= 100000 ? 0 : 1) + "k" : n.toLocaleString("en-US");
+  const ic = (id) => "<svg class='i'><use href='#" + id + "'/></svg>";
+  const hue = (s) => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h % 360; };
+  const initials = (s) => s.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 
-  // entrances: each block rises 14px and fades in, 110 ms apart (the site's cascade)
   const reveal = () => document.querySelectorAll(".rise").forEach((el, i) => setTimeout(() => el.classList.add("in"), 80 + i * 110));
 
-  function render() {
-    if (!data) return;
-    const src = v === "k" ? data.k : data.l, rows = [];
+  function rowsFor(mode, view) {
+    const src = view === "k" ? data.k : data.l, out = [];
     for (const key in src) {
-      const parts = key.split("|");
-      if (parts[0] !== g) continue;
-      const name = parts.slice(1).map(nice).join(" / ");
-      if (q && !name.toLowerCase().includes(q)) continue;
+      const p = key.split("|");
+      if (p[0] !== mode) continue;
       const e = src[key];
       let best = -1, bi = -1, w = 0;
       e.forEach((x, i) => { if (x) { w += x[1]; if (x[1] >= 5 && x[0] > best) { best = x[0]; bi = i; } } });
-      rows.push({ layer: nice(parts[1]), rest: parts.slice(2).map(nice).join(" · "), e, bi, w, best });
+      out.push({key, layer: nice(p[1]), rest: p.slice(2).map(nice).join(" · "), e, bi, w, best});
     }
-    rows.sort(sortBy === "w" ? (a, b) => b.best - a.best || b.w - a.w : (a, b) => b.w - a.w);
-    $("rows").innerHTML = rows.map((r) => "<tr><td class='bey'>" + esc(r.layer) + (r.rest ? "<span class='sub'>" + esc(r.rest) + "</span>" : "") + "</td>" +
-      r.e.map((x, i) => x
-        ? "<td class='r" + (i === r.bi ? " top" : "") + "'><span class='rate'><span><b>" + Math.round(x[0] / 10) + "%</b><span class='n'>" + x[1] + "</span></span>" +
-          "<span class='bar'><i style='width:" + Math.round(x[0] / 10) + "%'></i></span></span></td>"
-        : "<td class='r dash'>–</td>").join("") +
-      "<td>" + (r.bi >= 0 ? "<span class='best'>" + STYLES[r.bi] + "</span>" : "<span class='dash'>not enough yet</span>") + "</td></tr>").join("");
-    const none = !rows.length;
-    $("empty").hidden = !none;
-    if (none) $("empty").textContent = q ? "No bey matches that search." : "Not enough players have battled these yet.";
+    return out;
   }
 
-  function meta() {
+  function insights(rows) {
+    const tot = [0, 0, 0], won = [0, 0, 0];
+    rows.forEach((r) => r.e.forEach((x, i) => { if (x) { tot[i] += x[1]; won[i] += x[0] * x[1] / 1000; } }));
+    let bs = -1, bw = -1;
+    tot.forEach((t, i) => { if (t > 0 && won[i] / t > bw) { bw = won[i] / t; bs = i; } });
+    const solid = rows.filter((r) => r.bi >= 0 && r.w >= 40);
+    const tough = solid.slice().sort((a, b) => a.best - b.best)[0];
+    const most = rows.slice().sort((a, b) => b.w - a.w)[0];
+    const cards = [];
+    if (bs >= 0) cards.push("<div class='card' style='cursor:default'><span class='row1'>" + ic("i-crown") + "Best style vs " + MODE[g] + "</span>" +
+      "<b class='" + ST[bs].c + "' style='color:var(--c)'>" + ST[bs].n + "</b><span>Wins <em>" + Math.round(bw * 100) + "%</em> of " + fmt(tot[bs]) + " rounds overall.</span></div>");
+    if (tough) cards.push("<button class='card' type='button' data-k='" + esc(tough.key) + "'><span class='row1'>" + ic("i-shield") + "Toughest opponent</span>" +
+      "<b>" + esc(tough.layer) + "</b><span>Even the best style wins only <em>" + Math.round(tough.best / 10) + "%</em>: use " + ST[tough.bi].n + ".</span></button>");
+    if (most) cards.push("<button class='card' type='button' data-k='" + esc(most.key) + "'><span class='row1'>" + ic("i-flame") + "Most played</span>" +
+      "<b>" + esc(most.layer) + "</b><span><em>" + fmt(most.w) + "</em> rounds" + (most.bi >= 0 ? ", best with " + ST[most.bi].n : "") + ".</span></button>");
+    $("ins").innerHTML = cards.join("");
+    $("ins").querySelectorAll("[data-k]").forEach((b) => b.addEventListener("click", () => {
+      focusKey = b.dataset.k; q = ""; $("q").value = ""; shown = PAGE; render(false);
+      $("list").scrollIntoView({behavior: "smooth", block: "start"});
+    }));
+  }
+
+  function row(r) {
+    const h = hue(r.layer), a = (h * 7) % 360;
+    const bars = r.e.map((x, i) => {
+      const s = ST[i];
+      if (!x) return "<div class='bar none " + s.c + "'><span class='nm'>" + ic(s.i) + s.n + "</span><span class='tr'></span><span class='v'>–</span></div>";
+      const pct = Math.round(x[0] / 10), cls = (i === r.bi ? " win" : "") + (x[1] < 5 ? " few" : "");
+      return "<div class='bar " + s.c + cls + "' title='" + s.n + ": " + pct + "% over " + x[1] + " rounds'><span class='nm'>" + ic(s.i) + s.n + "</span>" +
+        "<span class='tr'><i style='width:" + Math.max(pct, 2) + "%'></i></span><span class='v'>" + pct + "%</span></div>";
+    }).join("");
+    const pick = r.bi >= 0
+      ? "<span class='chip " + ST[r.bi].c + "'>" + ic(ST[r.bi].i) + ST[r.bi].n + "</span>"
+      : "<span class='chip wait'>" + ic("i-clock") + "Not enough yet</span>";
+    return "<div class='m'><div class='who'><span class='av' style='--a:" + a + "deg;--h1:hsl(" + h + " 38% 46%)'>" +
+      "<i>" + esc(initials(r.layer)) + "</i></span><span style='min-width:0'><b>" + esc(r.layer) + "</b>" +
+      (r.rest ? "<small>" + esc(r.rest) + "</small>" : "<small>" + (v === "l" ? "every disc and driver" : "") + "</small>") + "</span></div>" +
+      "<div class='bars'>" + bars + "</div><div class='pick'>" + pick + "<small>" + fmt(r.w) + " rounds</small></div></div>";
+  }
+
+  function render(withInsights) {
     if (!data) return;
-    const nk = Object.keys(data.k).length, nl = Object.keys(data.l).length;
-    $("meta").innerHTML = "Live · updated <b>" + ago(data.at) + "</b> · <b>" + nk + "</b> beys · <b>" + nl + "</b> layers";
+    let rows = rowsFor(g, v);
+    if (withInsights !== false) insights(rows);
+    if (focusKey) rows = rows.filter((r) => r.key === focusKey);
+    if (q) rows = rows.filter((r) => (r.layer + " " + r.rest).toLowerCase().includes(q));
+    rows.sort(sortBy === "w" ? (a, b) => b.best - a.best || b.w - a.w : (a, b) => b.w - a.w);
+    const list = $("list");
+    if (!rows.length) {
+      list.innerHTML = "<div class='empty'>" + (q ? "No bey matches that search." : "Not enough players have battled these yet.") + "</div>";
+    } else {
+      list.innerHTML = rows.slice(0, shown).map(row).join("") +
+        (focusKey ? "<div class='more'><button class='btn' type='button' id='clear'>" + ic("i-back") + "Show every bey</button></div>" : "");
+      const c = $("clear");
+      if (c) c.addEventListener("click", () => { focusKey = null; render(false); });
+    }
+    const left = rows.length - shown;
+    $("moreWrap").hidden = focusKey || left <= 0;
+    $("moreTxt").textContent = "Show " + Math.min(left, PAGE) + " more (" + left + " left)";
   }
 
-  document.querySelectorAll("[data-g]").forEach((b) => b.addEventListener("click", () => {
-    g = b.dataset.g; document.querySelectorAll("[data-g]").forEach((x) => x.classList.toggle("on", x === b)); render();
-  }));
-  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => {
-    v = b.dataset.v; document.querySelectorAll("[data-v]").forEach((x) => x.classList.toggle("on", x === b)); render();
-  }));
-  document.querySelectorAll("[data-s]").forEach((b) => b.addEventListener("click", () => {
-    sortBy = b.dataset.s; document.querySelectorAll("[data-s]").forEach((x) => x.classList.toggle("on", x === b)); render();
-  }));
-  $("q").addEventListener("input", (ev) => { q = ev.target.value.trim().toLowerCase(); render(); });
+  function stats() {
+    if (!data) return;
+    let rounds = 0;
+    const opp = new Set();
+    for (const key in data.k) {
+      opp.add(key.split("|").slice(1).join("|"));
+      data.k[key].forEach((x) => { if (x) rounds += x[1]; });
+    }
+    const layers = new Set(Object.keys(data.l).map((k) => k.split("|")[1]));
+    $("sRounds").textContent = fmt(rounds);
+    $("sOpp").textContent = fmt(opp.size);
+    $("sLayers").textContent = fmt(layers.size);
+    $("sAt").textContent = ago(data.at);
+    $("live").classList.remove("off");
+    $("liveTxt").textContent = "Live";
+  }
 
-  // the side list follows the section you're reading
-  const links = [...document.querySelectorAll(".toc a")];
-  const io = new IntersectionObserver((es) => es.forEach((en) => {
-    if (en.isIntersecting) links.forEach((a) => a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id));
-  }), { rootMargin: "-40% 0px -55% 0px" });
-  document.querySelectorAll("main section[id]").forEach((s) => io.observe(s));
+  const press = (sel, btn) => document.querySelectorAll(sel).forEach((x) => x.setAttribute("aria-pressed", String(x === btn)));
+  document.querySelectorAll("[data-g]").forEach((b) => b.addEventListener("click", () => { g = b.dataset.g; press("[data-g]", b); shown = PAGE; focusKey = null; render(); }));
+  document.querySelectorAll("[data-v]").forEach((b) => b.addEventListener("click", () => { v = b.dataset.v; press("[data-v]", b); shown = PAGE; focusKey = null; render(); }));
+  document.querySelectorAll("[data-s]").forEach((b) => b.addEventListener("click", () => { sortBy = b.dataset.s; press("[data-s]", b); shown = PAGE; render(false); }));
+  $("q").addEventListener("input", (ev) => { q = ev.target.value.trim().toLowerCase(); focusKey = null; shown = PAGE; render(false); });
+  $("more").addEventListener("click", () => { shown += PAGE; render(false); });
 
   async function load() {
     try {
-      const r = await fetch(URL_GD, { cache: "no-store" });
+      const r = await fetch(URL_GD, {cache: "no-store"});
       if (!r.ok) throw new Error(r.status);
       data = await r.json();
-      meta(); render();
+      stats(); render();
     } catch (e) {
-      $("meta").innerHTML = "Couldn't reach the database. Try again in a minute.";
-      $("empty").hidden = false; $("empty").textContent = "No data right now.";
+      $("liveTxt").textContent = "Offline";
+      if (!data) $("list").innerHTML = "<div class='empty'>Couldn't reach the database. Try again in a minute.</div>";
     }
   }
   reveal(); load();
-  setInterval(meta, 60000);
+  setInterval(() => { if (data) $("sAt").textContent = ago(data.at); }, 60000);
   setInterval(load, 600000);
 })();
 </script>
