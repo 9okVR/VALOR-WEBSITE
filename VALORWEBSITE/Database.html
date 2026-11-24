@@ -51,15 +51,32 @@ section{margin-top:72px}
 .head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:0 0 18px}
 .head p{margin:6px 0 0;font-size:0.9375rem;line-height:1.6;color:var(--t3);max-width:62ch}
 .games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.game{position:relative;display:flex;flex-direction:column;gap:14px;padding:20px;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
-  color:var(--t2);text-align:left;border:0;font:inherit;cursor:pointer;transition:background 180ms var(--ease),box-shadow 180ms var(--ease)}
-.game:hover{background:var(--s2)}
-.game.on{background:var(--s1);box-shadow:inset 0 0 0 1px rgba(232,83,107,0.55)}
-.game.soon{cursor:default;opacity:0.62}
-.game.soon:hover{background:var(--s1)}
-.game .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.game b{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.0625rem;color:var(--t1)}
+.game{position:relative;display:flex;flex-direction:column;overflow:hidden;border-radius:var(--r);background:var(--s1);box-shadow:inset 0 0 0 1px var(--line);
+  color:var(--t2);text-align:left;transition:box-shadow 180ms var(--ease)}
+a.game:hover{text-decoration:none;box-shadow:inset 0 0 0 1px rgba(232,83,107,0.8)}
+.game.on{box-shadow:inset 0 0 0 1px rgba(232,83,107,0.5)}
+.cover{position:relative;display:block;height:136px;background:var(--s2);overflow:hidden}
+.cover img{display:block;width:100%;height:100%;object-fit:cover}
+.cover:after{content:"";position:absolute;inset:auto 0 0;height:1px;background:var(--line)}
+.game.soon .cover img,.game.soon .cover svg{filter:grayscale(1);opacity:0.38}
+.mosaic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.pitch svg{display:block;width:100%;height:100%}
+.badge{position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:7px;height:26px;padding:0 10px;border-radius:999px;
+  font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;letter-spacing:0.1em;text-transform:uppercase;background:rgba(7,7,10,0.82);color:var(--t2);
+  box-shadow:inset 0 0 0 1px var(--line2)}
+.badge svg.i{width:13px;height:13px}
+.badge.ok{color:#9BEFE4;box-shadow:inset 0 0 0 1px rgba(70,211,194,0.4)}
+.badge.ok i{width:7px;height:7px;border-radius:50%;background:var(--smt)}
+.gbody{display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px;flex:1}
+.game b{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.125rem;letter-spacing:-0.01em;color:var(--t1)}
 .game small{font-size:0.875rem;line-height:1.5;color:var(--t3)}
+.game.soon b{color:var(--t2)}
+.gmeta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:6px;font-size:0.8125rem;color:var(--t3)}
+.gmeta span{display:inline-flex;align-items:center;gap:6px}
+.gmeta svg.i{width:15px;height:15px}
+.gmeta em{font-style:normal;font-weight:600;color:var(--t1)}
+.go{display:inline-flex;align-items:center;gap:6px;margin-top:auto;padding-top:12px;font-size:0.875rem;font-weight:600;color:var(--link)}
+.go svg.i{width:16px;height:16px}
 .tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:0.6875rem;
   letter-spacing:0.08em;text-transform:uppercase;background:var(--s3);color:var(--t3);box-shadow:inset 0 0 0 1px var(--line2)}
 .tag.ok{background:rgba(70,211,194,0.1);color:#9BEFE4;box-shadow:inset 0 0 0 1px rgba(70,211,194,0.28)}
@@ -148,7 +165,7 @@ section{margin-top:72px}
 @media (max-width:720px){.hero{grid-template-columns:1fr}.games,.styles,.insights,.fair{grid-template-columns:1fr}
   .wrap{padding:40px 16px 96px}.tools{margin:0 -16px 12px;padding:10px 16px}.seg{flex:1 1 auto}.seg button{flex:1;justify-content:center;padding:0 8px}
   .find{flex-basis:100%}.m{padding:14px;gap:14px}.bar{grid-template-columns:88px minmax(0,1fr) 42px}}
-@media (max-width:720px){.games{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}.games::-webkit-scrollbar{display:none}
+@media (max-width:720px){.games{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}.games::-webkit-scrollbar{display:none}
   .game{flex:0 0 78%;scroll-snap-align:start}
   .tools{position:static;background:none;backdrop-filter:none;-webkit-backdrop-filter:none}.seg{flex:1 1 100%}
   .style{padding:14px;gap:12px}.style .ico{width:36px;height:36px}.style span{font-size:0.8125rem}.hero .live{justify-self:start}}
@@ -182,6 +199,7 @@ section{margin-top:72px}
   <symbol id="i-cap" viewBox="0 0 24 24"><path d="M4 19.5h16M7 16V9M12 16V5M17 16v-4"/></symbol>
   <symbol id="i-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m12 8 3.5 2.6-1.3 4.1H9.8l-1.3-4.1z"/><path d="M12 3.5V8M15.5 10.6l4.3-1.6M14.2 14.7l2.6 3.8M9.8 14.7l-2.6 3.8M8.5 10.6 4.2 9"/></symbol>
   <symbol id="i-fish" viewBox="0 0 24 24"><path d="M3 12c3-4.5 8-6 12.5-3.5L21 5v14l-5.5-3.5C11 18 6 16.5 3 12z"/><circle cx="8" cy="11" r="0.9"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
 </svg>
@@ -211,17 +229,23 @@ section{margin-top:72px}
   <section class="rise" aria-labelledby="gTitle">
     <div class="head"><div><h2 id="gTitle">Games</h2><p>Pick a game to see what its players have taught the scripts.</p></div></div>
     <div class="games">
-      <button class="game on" type="button" aria-pressed="true">
-        <span class="top"><span class="ico red"><svg class="i"><use href="#i-bey"/></svg></span><span class="tag ok">Live</span></span>
-        <span><b>Bey Rivals</b><br><small>Global Data: the playstyle that wins most against each bey.</small></span>
-      </button>
+      <a class="game on" href="#global">
+        <span class="cover"><img src="assets/thumb-bey-rivals.jpg" alt="Bey Rivals"><span class="badge ok"><i></i>Live</span></span>
+        <span class="gbody"><b>Bey Rivals</b><small>Global Data: the playstyle that wins most against each bey.</small>
+          <span class="gmeta"><span><svg class="i"><use href="#i-pulse"/></svg><em id="gRounds">–</em>rounds</span><span><svg class="i"><use href="#i-target"/></svg><em id="gOpp">–</em>opponents</span></span>
+          <span class="go">View the data<svg class="i"><use href="#i-arrow"/></svg></span></span>
+      </a>
       <div class="game soon">
-        <span class="top"><span class="ico"><svg class="i"><use href="#i-ball"/></svg></span><span class="tag">Soon</span></span>
-        <span><b>Turbo Soccer</b><br><small>Match data from auto play.</small></span>
+        <span class="cover pitch"><svg viewBox="0 0 320 136" fill="none" stroke="#C9C9D3" stroke-width="2" aria-hidden="true">
+          <rect x="24" y="16" width="272" height="104" rx="6"/><path d="M160 16v104"/><circle cx="160" cy="68" r="22"/><circle cx="160" cy="68" r="2.5" fill="#C9C9D3"/>
+          <path d="M24 44h30v48H24M296 44h-30v48h30M24 56h12v24H24M296 56h-12v24h12"/><circle cx="214" cy="52" r="7"/></svg>
+          <span class="badge"><svg class="i"><use href="#i-lock"/></svg>Soon</span></span>
+        <span class="gbody"><b>Turbo Soccer</b><small>Match data from auto play: the kickoffs, shots and saves that work.</small></span>
       </div>
       <div class="game soon">
-        <span class="top"><span class="ico"><svg class="i"><use href="#i-fish"/></svg></span><span class="tag">Soon</span></span>
-        <span><b>More games</b><br><small>New database features land here first.</small></span>
+        <span class="cover mosaic"><img src="assets/thumb-99-nights-in-the-forest.jpg" alt=""><img src="assets/thumb-the-strongest-battlegrounds.jpg" alt=""><img src="assets/thumb-brookhaven-rp.jpg" alt=""><img src="assets/thumb-fisch.jpg" alt="">
+          <span class="badge"><svg class="i"><use href="#i-lock"/></svg>Soon</span></span>
+        <span class="gbody"><b>More games</b><small>New database features land here first.</small></span>
       </div>
     </div>
   </section>
@@ -378,6 +402,8 @@ section{margin-top:72px}
     const layers = new Set(Object.keys(data.l).map((k) => k.split("|")[1]));
     $("sRounds").textContent = fmt(rounds);
     $("sOpp").textContent = fmt(opp.size);
+    $("gRounds").textContent = fmt(rounds);
+    $("gOpp").textContent = fmt(opp.size);
     $("sLayers").textContent = fmt(layers.size);
     $("sAt").textContent = ago(data.at);
     $("live").classList.remove("off");
